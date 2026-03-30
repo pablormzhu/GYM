@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRUTAL PRO — Fuerza + Quema</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:#0d0d0d; --s1:#141414; --s2:#1a1a1a;
+  --line:#252525; --line2:#333;
+  --fire:#ff5c00; --ice:#00c8ff; --lime:#c6f135;
+  --white:#f2f2f2; --grey:#777; --grey2:#444;
+}
+body { background:var(--bg); color:var(--white); font-family:'IBM Plex Sans',sans-serif; min-height:100vh; overflow-x:hidden; }
+body::after {
+  content:''; position:fixed; inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none; z-index:9999; opacity:.5;
+}
+.hero { padding:3.5rem 2.5rem 2rem; border-bottom:1px solid var(--line); position:relative; overflow:hidden; }
+.hero-bg-text { position:absolute; right:-1rem; bottom:-1.5rem; font-family:'Anton',sans-serif; font-size:clamp(7rem,22vw,15rem); color:transparent; -webkit-text-stroke:1px var(--line); line-height:1; pointer-events:none; user-select:none; letter-spacing:-.02em; }
+.kicker { font-family:'IBM Plex Mono',monospace; font-size:.6rem; font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:var(--fire); margin-bottom:.9rem; }
+.hero h1 { font-family:'Anton',sans-serif; font-size:clamp(3.8rem,12vw,7rem); line-height:.9; letter-spacing:-.01em; text-transform:uppercase; }
+.hero h1 em { color:var(--fire); font-style:normal; }
+.hero-meta { display:flex; gap:2rem; margin-top:1.4rem; flex-wrap:wrap; }
+.meta-item { display:flex; flex-direction:column; gap:.2rem; }
+.meta-val { font-family:'Anton',sans-serif; font-size:1.7rem; color:var(--lime); line-height:1; }
+.meta-lbl { font-family:'IBM Plex Mono',monospace; font-size:.55rem; letter-spacing:.12em; text-transform:uppercase; color:var(--grey); }
+.pillars { display:grid; grid-template-columns:repeat(4,1fr); border-bottom:1px solid var(--line); }
+.pillar { padding:1.2rem 1.5rem; border-right:1px solid var(--line); }
+.pillar:last-child { border-right:none; }
+.pillar-icon { font-size:1.3rem; margin-bottom:.5rem; }
+.pillar-name { font-family:'IBM Plex Mono',monospace; font-size:.58rem; text-transform:uppercase; letter-spacing:.12em; color:var(--grey); margin-bottom:.3rem; }
+.pillar-val { font-family:'Anton',sans-serif; font-size:1.1rem; color:var(--white); letter-spacing:.02em; line-height:1.2; }
+.nav { display:flex; overflow-x:auto; scrollbar-width:none; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:100; background:var(--bg); }
+.nav::-webkit-scrollbar { display:none; }
+.nav-btn { flex-shrink:0; background:none; border:none; cursor:pointer; font-family:'IBM Plex Mono',monospace; font-size:.62rem; text-transform:uppercase; letter-spacing:.12em; color:var(--grey); padding:.9rem 1.6rem; border-bottom:2px solid transparent; transition:color .15s,border-color .15s; white-space:nowrap; }
+.nav-btn:hover { color:var(--white); }
+.nav-btn.active { color:var(--fire); border-bottom-color:var(--fire); }
+.content { max-width:860px; margin:0 auto; padding:2rem 2rem 4rem; }
+.tab { display:none; }
+.tab.active { display:block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.tab.active > * { animation:fadeUp .28s ease forwards; }
+.sec-head { display:flex; align-items:baseline; gap:1rem; margin-bottom:1.8rem; }
+.sec-num { font-family:'Anton',sans-serif; font-size:4rem; color:var(--line2); line-height:1; }
+.sec-title { font-family:'Anton',sans-serif; font-size:2rem; letter-spacing:.02em; text-transform:uppercase; line-height:1; }
+.sec-sub { font-family:'IBM Plex Mono',monospace; font-size:.58rem; color:var(--grey); text-transform:uppercase; letter-spacing:.1em; margin-top:.25rem; }
+.day { border:1px solid var(--line); margin-bottom:.7rem; overflow:hidden; }
+.day-head { display:flex; align-items:center; gap:1.2rem; padding:1rem 1.5rem; background:var(--s1); cursor:pointer; transition:background .12s; user-select:none; }
+.day-head:hover { background:var(--s2); }
+.day-num { font-family:'Anton',sans-serif; font-size:2.2rem; color:var(--line2); min-width:2.2rem; line-height:1; }
+.day-info { flex:1; }
+.day-name { font-family:'Anton',sans-serif; font-size:1.15rem; letter-spacing:.03em; text-transform:uppercase; line-height:1; }
+.day-tag { font-family:'IBM Plex Mono',monospace; font-size:.55rem; text-transform:uppercase; letter-spacing:.1em; margin-top:.25rem; }
+.tag-push{color:var(--fire)} .tag-pull{color:var(--ice)} .tag-legs{color:var(--lime)} .tag-hiit{color:var(--fire)} .tag-full{color:#c084fc} .tag-rest{color:var(--grey)}
+.day-arr { font-size:.75rem; color:var(--grey); transition:transform .2s; }
+.day.open .day-arr { transform:rotate(180deg); }
+.day-body { display:none; border-top:1px solid var(--line); background:var(--bg); padding:1.5rem; }
+.day.open .day-body { display:block; }
+.blk-label { font-family:'IBM Plex Mono',monospace; font-size:.58rem; text-transform:uppercase; letter-spacing:.15em; color:var(--fire); padding-bottom:.4rem; border-bottom:1px solid var(--line2); margin-bottom:.9rem; }
+.blk-label.blue{color:var(--ice)} .blk-label.green{color:var(--lime)}
+.t { width:100%; border-collapse:collapse; margin-bottom:1.4rem; }
+.t th { font-family:'IBM Plex Mono',monospace; font-size:.53rem; text-transform:uppercase; letter-spacing:.1em; color:var(--grey); padding:.4rem .7rem; text-align:left; border-bottom:1px solid var(--line); }
+.t td { padding:.75rem .7rem; border-bottom:1px solid var(--line2); vertical-align:top; }
+.t tr:last-child td { border-bottom:none; }
+.t-name { font-weight:500; color:var(--white); font-size:.88rem; }
+.t-note { font-family:'IBM Plex Mono',monospace; font-size:.65rem; color:var(--grey); margin-top:.2rem; }
+.t-reps { font-family:'IBM Plex Mono',monospace; font-size:.8rem; color:var(--lime); white-space:nowrap; }
+.t-clave { font-size:.78rem; color:#aaa; }
+.b { display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:.52rem; font-weight:600; text-transform:uppercase; letter-spacing:.06em; padding:.12rem .5rem; border-radius:2px; }
+.b-smith{background:rgba(255,92,0,.15);color:var(--fire)} .b-comp{background:rgba(198,241,53,.1);color:var(--lime)} .b-iso{background:rgba(255,255,255,.06);color:var(--grey)} .b-bw{background:rgba(192,132,252,.1);color:#c084fc}
+.callout { padding:.9rem 1.1rem; border-left:3px solid var(--fire); background:rgba(255,92,0,.05); margin:.8rem 0 1.2rem; }
+.callout p { font-size:.82rem; color:#bbb; line-height:1.65; }
+.callout strong { color:var(--fire); }
+.callout.blue{border-left-color:var(--ice);background:rgba(0,200,255,.04)} .callout.blue strong{color:var(--ice)}
+.callout.green{border-left-color:var(--lime);background:rgba(198,241,53,.04)} .callout.green strong{color:var(--lime)}
+.card { border:1px solid var(--line); margin-bottom:.9rem; overflow:hidden; }
+.card-head { background:var(--s1); padding:.7rem 1.2rem; font-family:'Anton',sans-serif; font-size:.95rem; color:var(--lime); letter-spacing:.04em; border-bottom:1px solid var(--line); }
+.card-body { padding:1.1rem 1.2rem; font-size:.83rem; color:#bbb; line-height:1.8; }
+.card-body li { margin-left:1.1rem; margin-bottom:.2rem; }
+.ov-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:1.5rem; }
+.ov-cell { background:var(--s1); padding:1.4rem; }
+.ov-cell h3 { font-family:'Anton',sans-serif; font-size:1rem; color:var(--fire); letter-spacing:.04em; margin-bottom:.7rem; }
+.ov-cell li, .ov-cell p { font-size:.83rem; color:#bbb; line-height:1.75; }
+.ov-cell ul { padding-left:1.1rem; }
+.macro-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:1.5rem; }
+.macro-cell { background:var(--s1); padding:1.5rem; text-align:center; }
+.macro-n { font-family:'Anton',sans-serif; font-size:3rem; color:var(--lime); line-height:1; }
+.macro-l { font-family:'IBM Plex Mono',monospace; font-size:.55rem; text-transform:uppercase; letter-spacing:.1em; color:var(--grey); margin-top:.3rem; }
+.macro-s { font-size:.73rem; color:#777; margin-top:.35rem; }
+.prog-t { width:100%; border-collapse:collapse; margin-bottom:1.5rem; }
+.prog-t th { font-family:'IBM Plex Mono',monospace; font-size:.55rem; text-transform:uppercase; letter-spacing:.1em; color:var(--grey); padding:.55rem .8rem; text-align:left; background:var(--s1); border-bottom:1px solid var(--line); }
+.prog-t td { padding:.65rem .8rem; border-bottom:1px solid var(--line2); font-size:.82rem; color:#ccc; }
+.prog-t tr:last-child td { border-bottom:none; }
+.prog-lift { font-weight:500; color:var(--white); }
+.phase-row { display:flex; align-items:center; gap:1rem; padding:.85rem 0; border-bottom:1px solid var(--line); }
+.phase-w { font-family:'Anton',sans-serif; font-size:1.4rem; color:var(--line2); min-width:2.8rem; }
+.phase-track { flex:1; height:3px; background:var(--line2); }
+.phase-fill { height:100%; background:var(--fire); }
+.phase-fill.deload{background:var(--ice)} .phase-fill.peak{background:var(--lime)}
+.phase-lbl { font-family:'IBM Plex Mono',monospace; font-size:.62rem; text-transform:uppercase; letter-spacing:.08em; color:var(--grey); min-width:9rem; text-align:right; }
+.rest-block { background:var(--s1); border:1px solid var(--line); padding:2rem; text-align:center; margin:.7rem 0; }
+.rest-block p { font-family:'Anton',sans-serif; font-size:1.4rem; color:var(--grey); letter-spacing:.04em; }
+.rest-block span { font-family:'IBM Plex Mono',monospace; font-size:.62rem; color:var(--grey2); display:block; margin-top:.4rem; text-transform:uppercase; letter-spacing:.1em; }
+@media(max-width:600px){
+  .pillars{grid-template-columns:repeat(2,1fr)} .ov-grid{grid-template-columns:1fr} .macro-grid{grid-template-columns:1fr}
+  .content{padding:1.2rem 1rem 3rem} .t th:nth-child(4),.t td:nth-child(4){display:none} .hero{padding:2.5rem 1.2rem 1.5rem}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-bg-text">BRK</div>
+  <div class="kicker">Programa 11 semanas · 1.83 m · 85 kg · Retorno con base sólida</div>
+  <h1>Fuerza<br><em>brutal.</em><br>Grasa<br><em>cero.</em></h1>
+  <div class="hero-meta">
+    <div class="meta-item"><div class="meta-val">11</div><div class="meta-lbl">Semanas</div></div>
+    <div class="meta-item"><div class="meta-val">5</div><div class="meta-lbl">Días/semana</div></div>
+    <div class="meta-item"><div class="meta-val">3</div><div class="meta-lbl">Fases</div></div>
+    <div class="meta-item"><div class="meta-val">300–500</div><div class="meta-lbl">Déficit kcal/día</div></div>
+  </div>
+</div>
+
+<div class="pillars">
+  <div class="pillar"><div class="pillar-icon">🏋️</div><div class="pillar-name">Punto de partida</div><div class="pillar-val">Bench ~90 kg<br>Pull-ups 5+ reps</div></div>
+  <div class="pillar"><div class="pillar-icon">🎯</div><div class="pillar-name">Objetivo sem 11</div><div class="pillar-val">Bench 110+ kg<br>Pull-ups con peso</div></div>
+  <div class="pillar"><div class="pillar-icon">🔥</div><div class="pillar-name">Cardio</div><div class="pillar-val">HIIT + estado<br>estable</div></div>
+  <div class="pillar"><div class="pillar-icon">⚡</div><div class="pillar-name">Regla de oro</div><div class="pillar-val">+2.5 kg en Smith<br>cada semana</div></div>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="showTab('overview',this)">Inicio</button>
+  <button class="nav-btn" onclick="showTab('fase1',this)">Fase 1 · Sem 1–3</button>
+  <button class="nav-btn" onclick="showTab('fase2',this)">Fase 2 · Sem 4–7</button>
+  <button class="nav-btn" onclick="showTab('fase3',this)">Fase 3 · Sem 8–11</button>
+  <button class="nav-btn" onclick="showTab('progresion',this)">Progresión</button>
+  <button class="nav-btn" onclick="showTab('nutricion',this)">Nutrición</button>
+</nav>
+
+<div class="content">
+
+<!-- ── INICIO ── -->
+<div class="tab active" id="overview">
+  <div class="ov-grid">
+    <div class="ov-cell">
+      <h3>Split semanal</h3>
+      <ul>
+        <li><strong style="color:var(--fire)">Lun</strong> — Empuje: pecho · hombro · tríceps</li>
+        <li><strong style="color:var(--ice)">Mar</strong> — Jalón: espalda · bíceps</li>
+        <li><strong style="color:var(--lime)">Mié</strong> — HIIT + Core</li>
+        <li><strong style="color:var(--fire)">Jue</strong> — Piernas: cuád · isquio · glúteo</li>
+        <li><strong style="color:#c084fc">Vie</strong> — Full Body + cardio estado estable</li>
+        <li><strong style="color:var(--grey2)">Sáb/Dom</strong> — Descanso activo</li>
+      </ul>
+    </div>
+    <div class="ov-cell">
+      <h3>Tu perfil</h3>
+      <p>Tienes base real y fuerza funcional — el cuerpo recuerda. La Fase 1 es reactivación, no aprendizaje. Cargas altas desde el día 1. El sistema nervioso central se reactiva en 2–3 semanas y desde ahí la fuerza sube rápido. El déficit calórico moderado garantiza que pierdes grasa sin sacrificar las ganancias de fuerza.</p>
+    </div>
+    <div class="ov-cell">
+      <h3>Estructura de 11 semanas</h3>
+      <ul>
+        <li><strong style="color:var(--fire)">Fase 1 · Sem 1–3:</strong> Reactivación. Cargas altas, volumen moderado. Sem 3 = descarga.</li>
+        <li><strong style="color:var(--lime)">Fase 2 · Sem 4–7:</strong> Carga máxima progresiva + drop sets + superseries. Sem 7 = descarga.</li>
+        <li><strong style="color:var(--ice)">Fase 3 · Sem 8–11:</strong> Rest-Pause, Giant Sets, Myo-reps. Sem 11 = peak + test.</li>
+      </ul>
+    </div>
+    <div class="ov-cell">
+      <h3>Reglas de oro</h3>
+      <ul>
+        <li>Tempo en Smith: <strong>3-1-2</strong> siempre</li>
+        <li>Pull-ups: rango completo — nada de medio rep</li>
+        <li>Descanso big lifts: <strong>2–3 min</strong></li>
+        <li>Descanso accesorios: <strong>60–90 seg</strong></li>
+        <li>Completas todas las reps → +2.5 kg la siguiente semana</li>
+        <li>Sueño 7–8 hrs · Agua 3 L/día mínimo</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ── FASE 1 · SEM 1–3 ── -->
+<div class="tab" id="fase1">
+  <div class="sec-head">
+    <div class="sec-num">01</div>
+    <div class="sec-info">
+      <div class="sec-title">Fase 1</div>
+      <div class="sec-sub">Semanas 1–3 · Reactivación · Cargas altas desde el día 1 · Sem 3 = descarga</div>
+    </div>
+  </div>
+  <div class="callout">
+    <p>Arranca fuerte. Bench ~<strong>85–90 kg</strong> de trabajo desde la semana 1. Squat Smith ~<strong>80 kg</strong>. Pull-ups con volumen real — 5 series al máximo, anotar reps por serie. En 2 semanas el SNC está online y los pesos empiezan a subir solos.</p>
+  </div>
+
+  <!-- LUNES -->
+  <div class="day" onclick="toggleDay(this)">
+    <div class="day-head">
+      <div class="day-num">L</div>
+      <div class="day-info">
+        <div class="day-name">Lunes — Empuje</div>
+        <div class="day-tag tag-push">Pecho · Hombro · Tríceps · 65–70 min</div>
+      </div>
+      <div class="day-arr">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="blk-label">Big lifts — Smith Machine</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="t-name">Bench Press</div><div class="t-note">~85–90 kg · barra toca el pecho · codos a 75°</div></td>
+            <td><div class="t-reps">4 × 8</div></td>
+            <td><span class="b b-smith">Smith</span></td>
+            <td class="t-clave">Tempo 3-1-2 · +2.5 kg si completas todo</td>
+          </tr>
+          <tr>
+            <td><div class="t-name">Overhead Press</div><div class="t-note">~55–65 kg · sentado · barra baja a la barbilla</div></td>
+            <td><div class="t-reps">4 × 8–10</div></td>
+            <td><span class="b b-smith">Smith</span></td>
+            <td class="t-clave">Core apretado · no arquear lumbar</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="blk-label blue">Accesorios</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Press inclinado con mancuernas</div><div class="t-note">30–45° · 30 lbs</div></td><td><div class="t-reps">3 × 10</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Tempo 3-1-2</td></tr>
+          <tr><td><div class="t-name">Elevaciones laterales</div></td><td><div class="t-reps">4 × 15</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">Pausa 1 seg arriba</td></tr>
+          <tr><td><div class="t-name">Flyes en cable (cruce)</div><div class="t-note">Poleas altas</div></td><td><div class="t-reps">3 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">No bloquear codos</td></tr>
+          <tr><td><div class="t-name">Extensión de tríceps en cable (cuerda)</div></td><td><div class="t-reps">3 × 15</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">Separa la cuerda al final</td></tr>
+          <tr><td><div class="t-name">Dips en banco</div></td><td><div class="t-reps">3 × máx</div></td><td><span class="b b-bw">Corporal</span></td><td class="t-clave"></td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><p><strong>Finisher:</strong> 10 min cardio estado estable al 65% FC máx.</p></div>
+    </div>
+  </div>
+
+  <!-- MARTES -->
+  <div class="day" onclick="toggleDay(this)">
+    <div class="day-head">
+      <div class="day-num">M</div>
+      <div class="day-info">
+        <div class="day-name">Martes — Jalón</div>
+        <div class="day-tag tag-pull">Espalda · Bíceps · 65–70 min</div>
+      </div>
+      <div class="day-arr">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="blk-label">Big lift — Pull-ups</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="t-name">Pull-ups — Agarre prono ancho</div><div class="t-note">Rango completo · pausa 1 seg arriba · sin balancear</div></td>
+            <td><div class="t-reps">5 × máx</div></td>
+            <td><span class="b b-bw">Corporal</span></td>
+            <td class="t-clave">Anota reps por serie — referencia para agregar peso en Fase 2</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="blk-label blue">Accesorios</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Lat Pulldown agarre neutro (V)</div></td><td><div class="t-reps">4 × 10</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Pecho arriba · no jalar con brazos</td></tr>
+          <tr><td><div class="t-name">Remo en cable sentado (V)</div></td><td><div class="t-reps">4 × 10</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Aprieta escápulas al final</td></tr>
+          <tr><td><div class="t-name">Remo Smith inclinado</div><div class="t-note">Espalda 45° · tira al ombligo</div></td><td><div class="t-reps">3 × 10</div></td><td><span class="b b-smith">Smith</span></td><td class="t-clave">Carga real desde el inicio</td></tr>
+          <tr><td><div class="t-name">Remo con mancuerna un brazo</div><div class="t-note">30 lbs · apoyado en banco</div></td><td><div class="t-reps">3 × 10 c/lado</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Rango completo · no rotar cadera</td></tr>
+          <tr><td><div class="t-name">Curl bíceps con mancuernas</div></td><td><div class="t-reps">3 × 10</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">Supinación completa</td></tr>
+          <tr><td><div class="t-name">Curl martillo</div></td><td><div class="t-reps">3 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Face pulls en cable</div><div class="t-note">Cuerda a altura de cara · rotación externa</div></td><td><div class="t-reps">3 × 20</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">No omitir — salud del hombro</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MIÉRCOLES -->
+  <div class="day" onclick="toggleDay(this)">
+    <div class="day-head">
+      <div class="day-num">X</div>
+      <div class="day-info">
+        <div class="day-name">Miércoles — HIIT + Core</div>
+        <div class="day-tag tag-hiit">Alta intensidad · 45 min</div>
+      </div>
+      <div class="day-arr">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="blk-label">Circuito HIIT — 4 rondas · 45 seg descanso entre rondas</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Duración / Reps</th><th>Nota</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Sentadilla con peso corporal</div></td><td><div class="t-reps">40 seg</div></td><td class="t-clave">Explosivo al subir</td></tr>
+          <tr><td><div class="t-name">Mountain climbers</div></td><td><div class="t-reps">30 seg</div></td><td class="t-clave">Core apretado</td></tr>
+          <tr><td><div class="t-name">Swing con mancuerna (estilo kettlebell)</div><div class="t-note">30 lbs</div></td><td><div class="t-reps">20 reps</div></td><td class="t-clave">Impulso de cadera, no brazos</td></tr>
+          <tr><td><div class="t-name">Burpees</div></td><td><div class="t-reps">12 reps</div></td><td class="t-clave">Sin parar</td></tr>
+          <tr><td><div class="t-name">Jumping jacks</div></td><td><div class="t-reps">30 seg</div></td><td class="t-clave">Recuperación activa</td></tr>
+        </tbody>
+      </table>
+      <div class="blk-label green">Core — 3 rondas</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Nota</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Plancha isométrica</div></td><td><div class="t-reps">3 × 45 seg</div></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Crunch en cable (polea alta)</div><div class="t-note">Rodillas en suelo</div></td><td><div class="t-reps">3 × 20</div></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Elevación de piernas colgado</div><div class="t-note">Barra de pull-ups</div></td><td><div class="t-reps">3 × 15</div></td><td class="t-clave">Sin balancear</td></tr>
+          <tr><td><div class="t-name">Plancha lateral</div></td><td><div class="t-reps">3 × 35 seg/lado</div></td><td class="t-clave"></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- JUEVES -->
+  <div class="day" onclick="toggleDay(this)">
+    <div class="day-head">
+      <div class="day-num">J</div>
+      <div class="day-info">
+        <div class="day-name">Jueves — Piernas</div>
+        <div class="day-tag tag-legs">Cuádriceps · Isquios · Glúteos · 70 min</div>
+      </div>
+      <div class="day-arr">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="blk-label">Big lifts — Smith Machine</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="t-name">Squat</div><div class="t-note">~80 kg · pies ligeramente adelantados · profundidad completa</div></td>
+            <td><div class="t-reps">4 × 8–10</div></td>
+            <td><span class="b b-smith">Smith</span></td>
+            <td class="t-clave">Tempo 3-1-2 · +2.5 kg cada semana</td>
+          </tr>
+          <tr>
+            <td><div class="t-name">Hip Thrust</div><div class="t-note">~90 kg · espalda en banco · toalla bajo la barra</div></td>
+            <td><div class="t-reps">4 × 10</div></td>
+            <td><span class="b b-smith">Smith</span></td>
+            <td class="t-clave">Glúteo apretado 2 seg arriba</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="blk-label blue">Accesorios</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Prensa de pierna</div></td><td><div class="t-reps">4 × 12</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Peso real · no conservador</td></tr>
+          <tr><td><div class="t-name">Zancadas búlgaras con mancuernas</div><div class="t-note">Pie trasero elevado · 30 lbs c/mano</div></td><td><div class="t-reps">3 × 10 c/pierna</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">El movimiento más brutal del día</td></tr>
+          <tr><td><div class="t-name">Extensión de cuádriceps en máquina</div></td><td><div class="t-reps">3 × 15</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">Pausa 1 seg arriba</td></tr>
+          <tr><td><div class="t-name">Curl femoral en máquina</div></td><td><div class="t-reps">3 × 15</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Elevación de talones de pie</div><div class="t-note">Con mancuerna</div></td><td><div class="t-reps">4 × 20</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">Pausa 2 seg arriba</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- VIERNES -->
+  <div class="day" onclick="toggleDay(this)">
+    <div class="day-head">
+      <div class="day-num">V</div>
+      <div class="day-info">
+        <div class="day-name">Viernes — Full Body + Cardio</div>
+        <div class="day-tag tag-full">Compuestos · Cardio estado estable · 70 min</div>
+      </div>
+      <div class="day-arr">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="blk-label">Full Body — Compuestos principales</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Chin-ups (agarre supino)</div><div class="t-note">Palmas hacia ti · varía agarre respecto al martes</div></td><td><div class="t-reps">4 × máx</div></td><td><span class="b b-bw">Corporal</span></td><td class="t-clave">Rango completo</td></tr>
+          <tr><td><div class="t-name">Bench Press Smith — volumen</div><div class="t-note">70% del peso del lunes</div></td><td><div class="t-reps">3 × 15</div></td><td><span class="b b-smith">Smith</span></td><td class="t-clave">Más reps, menos peso</td></tr>
+          <tr><td><div class="t-name">Romanian Deadlift con mancuernas</div><div class="t-note">Bisagra de cadera · espalda neutra · 30 lbs</div></td><td><div class="t-reps">4 × 12</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Empuja cadera atrás · no dobles rodillas</td></tr>
+          <tr><td><div class="t-name">Remo en cable con cuerda</div></td><td><div class="t-reps">3 × 12</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Press Arnold con mancuernas</div></td><td><div class="t-reps">3 × 12</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Zancadas caminando con mancuernas</div><div class="t-note">30 lbs</div></td><td><div class="t-reps">3 × 12 c/pierna</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave"></td></tr>
+        </tbody>
+      </table>
+      <div class="callout green"><p><strong>Cardio estado estable — 20–25 min al 65–70% FC máx.</strong> Post-pesas el cuerpo quema grasa preferentemente. El viernes es el día de mayor oxidación de grasa de toda la semana.</p></div>
+    </div>
+  </div>
+
+  <div class="rest-block"><p>Sábado / Domingo — Descanso activo</p><span>Caminata 30–45 min · Movilidad · Stretching · Sin pesas</span></div>
+  <div class="callout" style="margin-top:1rem"><p><strong>Semana 3 — Descarga:</strong> Mismos pesos, 40% menos series. El SNC consolida las ganancias de fuerza antes de la Fase 2.</p></div>
+</div>
+
+<!-- ── FASE 2 · SEM 4–7 ── -->
+<div class="tab" id="fase2">
+  <div class="sec-head">
+    <div class="sec-num">02</div>
+    <div class="sec-info">
+      <div class="sec-title">Fase 2</div>
+      <div class="sec-sub">Semanas 4–7 · Carga máxima · Drop sets · Superseries · Sem 7 = descarga</div>
+    </div>
+  </div>
+  <div class="callout">
+    <p>El músculo está reactivado. Ahora se sube el peso en Smith semana a semana y entran las técnicas de intensidad. <strong>Drop set obligatorio</strong> en la última serie de cada big lift. Las superseries del viernes duplican la densidad y la quema calórica por sesión.</p>
+  </div>
+
+  <!-- LUNES -->
+  <div class="day" onclick="toggleDay(this)">
+    <div class="day-head">
+      <div class="day-num">L</div>
+      <div class="day-info">
+        <div class="day-name">Lunes — Empuje</div>
+        <div class="day-tag tag-push">Pecho · Hombro · Tríceps · 70–75 min</div>
+      </div>
+      <div class="day-arr">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="blk-label">Big lifts — Smith Machine · Carga aumentada</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="t-name">Bench Press</div><div class="t-note">Peso final Fase 1 + 5 kg · ~95–100 kg</div></td>
+            <td><div class="t-reps">5 × 6–8</div></td>
+            <td><span class="b b-smith">Smith</span></td>
+            <td class="t-clave">Última serie: drop set −10 kg hasta el fallo</td>
+          </tr>
+          <tr>
+            <td><div class="t-name">Overhead Press</div><div class="t-note">~65–70 kg</div></td>
+            <td><div class="t-reps">4 × 8</div></td>
+            <td><span class="b b-smith">Smith</span></td>
+            <td class="t-clave">Última serie: drop set</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="blk-label blue">Accesorios — Tempo 4-1-2</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Press inclinado con mancuernas</div></td><td><div class="t-reps">4 × 10</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Tempo 4-1-2</td></tr>
+          <tr><td><div class="t-name">Elevaciones laterales</div></td><td><div class="t-reps">5 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">Pausa 2 seg arriba</td></tr>
+          <tr><td><div class="t-name">Flyes en cable</div></td><td><div class="t-reps">4 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Kickback de tríceps con mancuerna</div></td><td><div class="t-reps">3 × 15</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Extensión de tríceps en cable</div></td><td><div class="t-reps">4 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><p><strong>Finisher:</strong> 15 min cardio estado estable al 65% FC máx.</p></div>
+    </div>
+  </div>
+
+  <!-- MARTES -->
+  <div class="day" onclick="toggleDay(this)">
+    <div class="day-head">
+      <div class="day-num">M</div>
+      <div class="day-info">
+        <div class="day-name">Martes — Jalón</div>
+        <div class="day-tag tag-pull">Espalda · Bíceps · 70–75 min</div>
+      </div>
+      <div class="day-arr">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="blk-label">Big lift — Pull-ups con peso añadido</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="t-name">Pull-ups con mancuerna entre pies</div><div class="t-note">Peso que permita 6–8 reps limpias · sube cada semana que completes todo</div></td>
+            <td><div class="t-reps">5 × 6–8</div></td>
+            <td><span class="b b-bw">Corporal</span></td>
+            <td class="t-clave">Rango completo · sin balancear</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="blk-label blue">Accesorios</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Lat Pulldown neutro (V)</div></td><td><div class="t-reps">4 × 10</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Tempo 4-1-2</td></tr>
+          <tr><td><div class="t-name">Remo en cable sentado</div></td><td><div class="t-reps">5 × 10</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Última serie: drop set</td></tr>
+          <tr><td><div class="t-name">Remo Smith inclinado</div></td><td><div class="t-reps">4 × 10</div></td><td><span class="b b-smith">Smith</span></td><td class="t-clave">Carga aumentada vs Fase 1</td></tr>
+          <tr><td><div class="t-name">Pull-over con mancuerna en banco</div><div class="t-note">Dorsal en estiramiento</div></td><td><div class="t-reps">3 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Curl bíceps con mancuernas</div></td><td><div class="t-reps">4 × 10</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Curl concentrado</div></td><td><div class="t-reps">3 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Face pulls en cable</div></td><td><div class="t-reps">4 × 20</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">No omitir</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MIÉRCOLES -->
+  <div class="day" onclick="toggleDay(this)">
+    <div class="day-head">
+      <div class="day-num">X</div>
+      <div class="day-info">
+        <div class="day-name">Miércoles — HIIT + Core</div>
+        <div class="day-tag tag-hiit">5 rondas · 50 min</div>
+      </div>
+      <div class="day-arr">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="blk-label">Circuito HIIT — 5 rondas · 30 seg descanso entre rondas</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Duración / Reps</th><th>Nota</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Sentadilla con peso corporal</div></td><td><div class="t-reps">40 seg</div></td><td class="t-clave">Explosivo</td></tr>
+          <tr><td><div class="t-name">Mountain climbers</div></td><td><div class="t-reps">30 seg</div></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Devil's Press</div><div class="t-note">Burpee + swing con mancuerna · 30 lbs</div></td><td><div class="t-reps">10 reps</div></td><td class="t-clave">El más exigente del circuito</td></tr>
+          <tr><td><div class="t-name">Burpees</div></td><td><div class="t-reps">12 reps</div></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Jumping jacks</div></td><td><div class="t-reps">30 seg</div></td><td class="t-clave">Recuperación activa</td></tr>
+        </tbody>
+      </table>
+      <div class="blk-label green">Core — 4 rondas</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Plancha isométrica</div></td><td><div class="t-reps">4 × 50 seg</div></td></tr>
+          <tr><td><div class="t-name">Crunch en cable</div></td><td><div class="t-reps">4 × 20</div></td></tr>
+          <tr><td><div class="t-name">Elevación de piernas colgado</div></td><td><div class="t-reps">4 × 15</div></td></tr>
+          <tr><td><div class="t-name">Ab rollout en cable</div><div class="t-note">Rodillas en suelo · polea baja</div></td><td><div class="t-reps">3 × 12</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- JUEVES -->
+  <div class="day" onclick="toggleDay(this)">
+    <div class="day-head">
+      <div class="day-num">J</div>
+      <div class="day-info">
+        <div class="day-name">Jueves — Piernas</div>
+        <div class="day-tag tag-legs">Carga máxima progresiva · 75 min</div>
+      </div>
+      <div class="day-arr">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="blk-label">Big lifts — Smith Machine · Carga aumentada</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="t-name">Squat</div><div class="t-note">Peso final Fase 1 + 5 kg · ~85–90 kg</div></td>
+            <td><div class="t-reps">5 × 8</div></td>
+            <td><span class="b b-smith">Smith</span></td>
+            <td class="t-clave">Última serie: drop set −10 kg</td>
+          </tr>
+          <tr>
+            <td><div class="t-name">Hip Thrust</div><div class="t-note">~100–110 kg</div></td>
+            <td><div class="t-reps">5 × 10</div></td>
+            <td><span class="b b-smith">Smith</span></td>
+            <td class="t-clave">Carga aumentada · 2 seg arriba</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="blk-label blue">Accesorios</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Prensa de pierna</div></td><td><div class="t-reps">5 × 12</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Sin ser conservador</td></tr>
+          <tr><td><div class="t-name">Zancadas búlgaras con mancuernas</div><div class="t-note">30 lbs c/mano</div></td><td><div class="t-reps">4 × 8 c/pierna</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Último set al fallo</td></tr>
+          <tr><td><div class="t-name">Extensión de cuádriceps</div></td><td><div class="t-reps">4 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">Pausa 2 seg arriba</td></tr>
+          <tr><td><div class="t-name">Curl femoral en máquina</div></td><td><div class="t-reps">4 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Elevación de talones</div></td><td><div class="t-reps">5 × 20</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">Pausa 2 seg arriba</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- VIERNES -->
+  <div class="day" onclick="toggleDay(this)">
+    <div class="day-head">
+      <div class="day-num">V</div>
+      <div class="day-info">
+        <div class="day-name">Viernes — Full Body Superseries + Cardio</div>
+        <div class="day-tag tag-full">Antagonistas sin descanso · 70 min</div>
+      </div>
+      <div class="day-arr">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="callout blue"><p><strong>Superseries:</strong> ejecuta ejercicio A, sin descanso pasa al B. Descansa 75 seg después del par completo. Mayor densidad, más calorías quemadas por sesión.</p></div>
+      <div class="blk-label">Superseries — 4 rondas cada par</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio A</th><th>Ejercicio B</th><th>Series × Reps</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Bench Press Smith</div><div class="t-note">70% del peso del lunes</div></td><td><div class="t-name">Pull-ups / Chin-ups</div></td><td><div class="t-reps">4 × 12 + máx</div></td></tr>
+          <tr><td><div class="t-name">OHP Smith</div></td><td><div class="t-name">Remo cable sentado</div></td><td><div class="t-reps">3 × 12 + 12</div></td></tr>
+          <tr><td><div class="t-name">RDL con mancuernas</div></td><td><div class="t-name">Zancadas caminando</div></td><td><div class="t-reps">3 × 12 + 12</div></td></tr>
+        </tbody>
+      </table>
+      <div class="callout green"><p><strong>Cardio estado estable — 20 min al 65–70% FC máx.</strong> Post-superseries el cuerpo quema grasa casi exclusivamente.</p></div>
+    </div>
+  </div>
+
+  <div class="rest-block"><p>Sábado / Domingo — Descanso activo</p><span>Caminata 30–45 min · Movilidad · Stretching · Sin pesas</span></div>
+  <div class="callout" style="margin-top:1rem"><p><strong>Semana 7 — Descarga:</strong> Mismos pesos, 40% menos series. El SNC necesita esto antes de la Fase 3 o se estanca.</p></div>
+</div>
+
+<!-- ── FASE 3 · SEM 8–11 ── -->
+<div class="tab" id="fase3">
+  <div class="sec-head">
+    <div class="sec-num">03</div>
+    <div class="sec-info">
+      <div class="sec-title">Fase 3</div>
+      <div class="sec-sub">Semanas 8–11 · Densidad máxima · Límites absolutos · Sem 11 = peak</div>
+    </div>
+  </div>
+  <div class="callout">
+    <p>Más trabajo en el mismo tiempo. Entran <strong>Rest-Pause</strong>, <strong>Giant Sets</strong> y <strong>Myo-reps</strong>. Aquí la composición corporal cambia de forma visible y los números en los big lifts llegan al techo del ciclo.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-head">Técnicas de intensidad — Fase 3</div>
+    <div class="card-body">
+      <ul>
+        <li><strong style="color:var(--fire)">Rest-Pause:</strong> Serie al fallo → 15 seg → 3–5 reps más → 15 seg → 2–3 reps más. Todo cuenta como 1 serie. Se aplica en los big lifts de Smith.</li>
+        <li><strong style="color:var(--lime)">Giant Set en piernas:</strong> Squat → Prensa → Extensión → Curl femoral sin descanso entre ejercicios. Descansa 90 seg al terminar las 4 estaciones. × 4 vueltas.</li>
+        <li><strong style="color:var(--ice)">Myo-reps:</strong> 20 reps iniciales → 5 reps cada 5 seg × 4 veces. Se aplica en aislamiento.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- LUNES -->
+  <div class="day" onclick="toggleDay(this)">
+    <div class="day-head">
+      <div class="day-num">L</div>
+      <div class="day-info">
+        <div class="day-name">Lunes — Empuje</div>
+        <div class="day-tag tag-push">Rest-Pause · Superseries · 75 min</div>
+      </div>
+      <div class="day-arr">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="blk-label">Big lifts — Rest-Pause · Peso máximo del ciclo</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Bench Press</div><div class="t-note">~105–115 kg · peso máximo alcanzado en Fase 2</div></td><td><div class="t-reps">4 × Rest-Pause</div></td><td><span class="b b-smith">Smith</span></td><td class="t-clave">Al fallo total → 15 seg → sigue × 2</td></tr>
+          <tr><td><div class="t-name">Overhead Press</div><div class="t-note">~70–80 kg</div></td><td><div class="t-reps">4 × Rest-Pause</div></td><td><span class="b b-smith">Smith</span></td><td class="t-clave">Mismo protocolo</td></tr>
+        </tbody>
+      </table>
+      <div class="blk-label blue">Superseries Empuje + Jalón · 60 seg descanso</div>
+      <table class="t">
+        <thead><tr><th>A</th><th>B</th><th>Series × Reps</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Press inclinado mancuernas</div></td><td><div class="t-name">Remo cable</div></td><td><div class="t-reps">4 × 10 + 10</div></td></tr>
+          <tr><td><div class="t-name">Elevaciones laterales</div></td><td><div class="t-name">Face pulls</div></td><td><div class="t-reps">4 × 12 + 20</div></td></tr>
+        </tbody>
+      </table>
+      <div class="blk-label green">Myo-reps — Tríceps</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Protocolo</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Extensión de tríceps en cable</div></td><td class="t-clave">20 reps → 5×5 con 5 seg descanso</td></tr>
+          <tr><td><div class="t-name">Flyes en cable</div></td><td class="t-clave">20 reps → 5×5 con 5 seg descanso</td></tr>
+        </tbody>
+      </table>
+      <div class="callout"><p><strong>Finisher:</strong> 15 min cardio al 70% FC máx.</p></div>
+    </div>
+  </div>
+
+  <!-- MARTES -->
+  <div class="day" onclick="toggleDay(this)">
+    <div class="day-head">
+      <div class="day-num">M</div>
+      <div class="day-info">
+        <div class="day-name">Martes — Jalón</div>
+        <div class="day-tag tag-pull">Pull-ups pesadas · Superseries · 75 min</div>
+      </div>
+      <div class="day-arr">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="blk-label">Big lift — Pull-ups · Peso máximo del ciclo</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Pull-ups con peso máximo alcanzado</div><div class="t-note">Mancuerna entre pies o cinturón · última serie al fallo total</div></td><td><div class="t-reps">5 × 5–6</div></td><td><span class="b b-bw">Corporal</span></td><td class="t-clave">Rango completo · sin excusas</td></tr>
+        </tbody>
+      </table>
+      <div class="blk-label blue">Superseries · 60 seg descanso</div>
+      <table class="t">
+        <thead><tr><th>A</th><th>B</th><th>Series × Reps</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Lat Pulldown neutro (V)</div></td><td><div class="t-name">Remo Smith inclinado</div></td><td><div class="t-reps">4 × 10 + 10</div></td></tr>
+          <tr><td><div class="t-name">Remo mancuerna un brazo</div></td><td><div class="t-name">Pull-over con mancuerna</div></td><td><div class="t-reps">3 × 10 + 12</div></td></tr>
+        </tbody>
+      </table>
+      <div class="blk-label green">Myo-reps — Bíceps</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Protocolo</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Curl bíceps con mancuernas</div></td><td class="t-clave">20 reps → 5×5 con 5 seg descanso</td></tr>
+          <tr><td><div class="t-name">Curl martillo</div></td><td class="t-clave">20 reps → 5×5 con 5 seg descanso</td></tr>
+          <tr><td><div class="t-name">Face pulls en cable</div></td><td class="t-clave">4 × 20 — No omitir nunca</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- MIÉRCOLES -->
+  <div class="day" onclick="toggleDay(this)">
+    <div class="day-head">
+      <div class="day-num">X</div>
+      <div class="day-info">
+        <div class="day-name">Miércoles — HIIT + Core</div>
+        <div class="day-tag tag-hiit">Máxima intensidad · 5 rondas · 52 min</div>
+      </div>
+      <div class="day-arr">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="blk-label">Circuito HIIT — 5 rondas · 20 seg descanso entre rondas</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Duración / Reps</th><th>Nota</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Sentadilla con peso corporal</div></td><td><div class="t-reps">40 seg</div></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Mountain climbers</div></td><td><div class="t-reps">30 seg</div></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Devil's Press · 30 lbs</div></td><td><div class="t-reps">12 reps</div></td><td class="t-clave">2 reps más que Fase 2</td></tr>
+          <tr><td><div class="t-name">Burpees</div></td><td><div class="t-reps">12 reps</div></td><td class="t-clave"></td></tr>
+          <tr><td><div class="t-name">Jumping jacks</div></td><td><div class="t-reps">30 seg</div></td><td class="t-clave">Recuperación activa</td></tr>
+        </tbody>
+      </table>
+      <div class="blk-label green">Core — 4 rondas</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Plancha isométrica</div></td><td><div class="t-reps">4 × 60 seg</div></td></tr>
+          <tr><td><div class="t-name">Crunch en cable</div></td><td><div class="t-reps">4 × 25</div></td></tr>
+          <tr><td><div class="t-name">Elevación de piernas colgado</div></td><td><div class="t-reps">4 × 15</div></td></tr>
+          <tr><td><div class="t-name">Ab rollout en cable</div></td><td><div class="t-reps">4 × 12</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- JUEVES -->
+  <div class="day" onclick="toggleDay(this)">
+    <div class="day-head">
+      <div class="day-num">J</div>
+      <div class="day-info">
+        <div class="day-name">Jueves — Piernas</div>
+        <div class="day-tag tag-legs">Giant Set · Hip Thrust Rest-Pause · 80 min</div>
+      </div>
+      <div class="day-arr">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="callout green"><p><strong>Giant Set × 4 vueltas:</strong> Squat Smith × 12 → Prensa × 15 → Extensión cuád × 15 → Curl femoral × 12. Sin descanso entre ejercicios. 90 seg de descanso al completar las 4 estaciones.</p></div>
+      <div class="blk-label">Giant Set — 4 vueltas · 90 seg entre vueltas</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Reps por vuelta</th><th>Tipo</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Squat Smith</div><div class="t-note">~95–100 kg</div></td><td><div class="t-reps">12</div></td><td><span class="b b-smith">Smith</span></td></tr>
+          <tr><td><div class="t-name">Prensa de pierna</div></td><td><div class="t-reps">15</div></td><td><span class="b b-comp">Compuesto</span></td></tr>
+          <tr><td><div class="t-name">Extensión de cuádriceps</div></td><td><div class="t-reps">15</div></td><td><span class="b b-iso">Aislamiento</span></td></tr>
+          <tr><td><div class="t-name">Curl femoral en máquina</div></td><td><div class="t-reps">12</div></td><td><span class="b b-iso">Aislamiento</span></td></tr>
+        </tbody>
+      </table>
+      <div class="blk-label blue">Big lift + Aislamiento</div>
+      <table class="t">
+        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Clave</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Hip Thrust Smith — Rest-Pause</div><div class="t-note">~120–130 kg · peso máximo del ciclo</div></td><td><div class="t-reps">4 × Rest-Pause</div></td><td class="t-clave">Al fallo total</td></tr>
+          <tr><td><div class="t-name">Zancadas búlgaras con mancuernas</div></td><td><div class="t-reps">4 × 8 c/pierna</div></td><td class="t-clave">Último set: drop set</td></tr>
+          <tr><td><div class="t-name">Elevación de talones — Myo-reps</div></td><td><div class="t-reps">Myo-reps</div></td><td class="t-clave">20 reps → 5×5 con 5 seg</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- VIERNES -->
+  <div class="day" onclick="toggleDay(this)">
+    <div class="day-head">
+      <div class="day-num">V</div>
+      <div class="day-info">
+        <div class="day-name">Viernes — Full Body + Cardio</div>
+        <div class="day-tag tag-full">Superseries + 25 min cardio · 75 min</div>
+      </div>
+      <div class="day-arr">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="blk-label">Superseries Full Body — 4 rondas · 60 seg descanso</div>
+      <table class="t">
+        <thead><tr><th>A</th><th>B</th><th>Series × Reps</th></tr></thead>
+        <tbody>
+          <tr><td><div class="t-name">Bench Press Smith</div><div class="t-note">70% del peso del lunes</div></td><td><div class="t-name">Pull-ups</div></td><td><div class="t-reps">4 × 12 + máx</div></td></tr>
+          <tr><td><div class="t-name">OHP Smith</div></td><td><div class="t-name">Remo cable</div></td><td><div class="t-reps">3 × 12 + 12</div></td></tr>
+          <tr><td><div class="t-name">RDL con mancuernas</div></td><td><div class="t-name">Zancadas caminando</div></td><td><div class="t-reps">3 × 12 + 12</div></td></tr>
+        </tbody>
+      </table>
+      <div class="callout green"><p><strong>Cardio estado estable — 25 min al 70% FC máx.</strong> La semana termina aquí. Máxima quema de grasa del ciclo.</p></div>
+    </div>
+  </div>
+
+  <div class="rest-block"><p>Sábado / Domingo — Descanso activo</p><span>Caminata 30–45 min · Movilidad · Stretching · Sin pesas</span></div>
+  <div class="card" style="margin-top:1rem">
+    <div class="card-head">Semana 11 — Peak y test</div>
+    <div class="card-body">
+      <ul>
+        <li>Días 1–4: último ciclo completo con máxima intensidad</li>
+        <li>Días 5–7: volumen al 50%, solo big lifts, mismos pesos</li>
+        <li>Reduce carbohidratos los últimos 3 días para mayor definición visual</li>
+        <li>Hidratación: 3+ litros/día</li>
+        <li>Test de máximos: Bench Press Smith · Squat Smith · Pull-ups seguidas con peso</li>
+        <li>Mide: cintura · cadera · brazo · muslo + foto antes/después</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ── PROGRESIÓN ── -->
+<div class="tab" id="progresion">
+  <div class="sec-head">
+    <div class="sec-num">↑</div>
+    <div class="sec-info">
+      <div class="sec-title">Progresión</div>
+      <div class="sec-sub">Carga esperada · Métricas que importan</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">Proyección de carga — basada en tu punto de partida real</div>
+    <div class="card-body">
+      <table class="prog-t">
+        <thead><tr><th>Movimiento</th><th>Sem 1</th><th>Sem 3</th><th>Sem 7</th><th>Sem 11</th></tr></thead>
+        <tbody>
+          <tr><td class="prog-lift">Bench Press Smith</td><td>85–90 kg</td><td>92–97 kg</td><td>100–107 kg</td><td>110–120 kg</td></tr>
+          <tr><td class="prog-lift">Squat Smith</td><td>80 kg</td><td>85–90 kg</td><td>95–102 kg</td><td>105–115 kg</td></tr>
+          <tr><td class="prog-lift">Hip Thrust Smith</td><td>90 kg</td><td>97–102 kg</td><td>110–120 kg</td><td>125–140 kg</td></tr>
+          <tr><td class="prog-lift">OHP Smith</td><td>55–60 kg</td><td>62–67 kg</td><td>70–75 kg</td><td>78–85 kg</td></tr>
+          <tr><td class="prog-lift">Pull-ups seguidas (sin peso)</td><td>5–8 reps</td><td>8–12 reps</td><td>Con peso · 6–8 reps</td><td>Con peso · 8–10 reps</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">Qué medir — más allá de la báscula</div>
+    <div class="card-body">
+      <ul>
+        <li><strong>Circunferencia de cintura</strong> — bajar &gt;1 cm/mes = quemando grasa visceral ✅</li>
+        <li><strong>Circunferencia de brazo</strong> — mantener o subir = preservando músculo ✅</li>
+        <li><strong>Pull-ups con peso</strong> — el indicador más honesto de fuerza relativa en tu talla/peso</li>
+        <li><strong>Peso en Smith</strong> — progresión lineal semana a semana</li>
+        <li><strong>Foto cada 2 semanas</strong> — misma hora, misma luz, misma postura</li>
+        <li><strong>Peso corporal</strong> — solo referencia; puede no bajar si ganas músculo mientras pierdes grasa</li>
+      </ul>
+    </div>
+  </div>
+
+  <p style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.12em;color:var(--grey);margin:1.5rem 0 .8rem">Volumen e intensidad por semana</p>
+  <div class="phase-row"><div class="phase-w">01</div><div class="phase-track"><div class="phase-fill" style="width:35%"></div></div><div class="phase-lbl">Reactivación</div></div>
+  <div class="phase-row"><div class="phase-w">02</div><div class="phase-track"><div class="phase-fill" style="width:50%"></div></div><div class="phase-lbl">SNC online</div></div>
+  <div class="phase-row"><div class="phase-w">03</div><div class="phase-track"><div class="phase-fill deload" style="width:20%"></div></div><div class="phase-lbl" style="color:var(--ice)">Descarga</div></div>
+  <div class="phase-row"><div class="phase-w">04</div><div class="phase-track"><div class="phase-fill" style="width:62%"></div></div><div class="phase-lbl">Drop sets</div></div>
+  <div class="phase-row"><div class="phase-w">05</div><div class="phase-track"><div class="phase-fill" style="width:72%"></div></div><div class="phase-lbl">Carga máxima</div></div>
+  <div class="phase-row"><div class="phase-w">06</div><div class="phase-track"><div class="phase-fill" style="width:80%"></div></div><div class="phase-lbl">Superseries</div></div>
+  <div class="phase-row"><div class="phase-w">07</div><div class="phase-track"><div class="phase-fill deload" style="width:20%"></div></div><div class="phase-lbl" style="color:var(--ice)">Descarga</div></div>
+  <div class="phase-row"><div class="phase-w">08</div><div class="phase-track"><div class="phase-fill" style="width:82%"></div></div><div class="phase-lbl">Rest-Pause</div></div>
+  <div class="phase-row"><div class="phase-w">09</div><div class="phase-track"><div class="phase-fill" style="width:90%"></div></div><div class="phase-lbl">Giant sets</div></div>
+  <div class="phase-row"><div class="phase-w">10</div><div class="phase-track"><div class="phase-fill" style="width:97%"></div></div><div class="phase-lbl">Densidad máxima</div></div>
+  <div class="phase-row"><div class="phase-w">11</div><div class="phase-track"><div class="phase-fill peak" style="width:60%"></div></div><div class="phase-lbl" style="color:var(--lime)">Peak + Test</div></div>
+</div>
+
+<!-- ── NUTRICIÓN ── -->
+<div class="tab" id="nutricion">
+  <div class="sec-head">
+    <div class="sec-num">🥩</div>
+    <div class="sec-info">
+      <div class="sec-title">Nutrición</div>
+      <div class="sec-sub">Protocolo para quemar grasa sin perder músculo</div>
+    </div>
+  </div>
+  <div class="macro-grid">
+    <div class="macro-cell"><div class="macro-n">300–500</div><div class="macro-l">Déficit kcal/día</div><div class="macro-s">bajo tu mantenimiento</div></div>
+    <div class="macro-cell"><div class="macro-n">2 g</div><div class="macro-l">Proteína mínima</div><div class="macro-s">por kg de peso corporal · 170 g/día</div></div>
+    <div class="macro-cell"><div class="macro-n">0.8 g</div><div class="macro-l">Grasa dietética</div><div class="macro-s">por kg · ~68 g/día</div></div>
+  </div>
+  <div class="card">
+    <div class="card-head">Timing de comidas — días de entreno</div>
+    <div class="card-body">
+      <ul>
+        <li><strong>Pre-entreno 60–90 min antes:</strong> carbohidrato complejo + proteína moderada. Ej: avena + claras de huevo</li>
+        <li><strong>Post-entreno dentro de 45 min:</strong> proteína rápida + carbo simple. Ej: whey + plátano o arroz blanco</li>
+        <li><strong>Última comida del día:</strong> proteína de digestión lenta + grasa saludable. Ej: requesón + almendras</li>
+        <li><strong>Carbohidratos:</strong> concentra el 70% en pre y post-entreno. El resto del día: proteína + verduras + grasa</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head">Fuentes de proteína</div>
+    <div class="card-body">
+      <ul>
+        <li>Pechuga de pollo / pavo sin piel</li>
+        <li>Claras de huevo (4–6 enteras + claras extra)</li>
+        <li>Atún / sardinas en agua</li>
+        <li>Requesón / cottage (caseína natural, ideal antes de dormir)</li>
+        <li>Carne magra de res (95%)</li>
+        <li>Whey protein (si no alcanzas 170 g/día con comida real)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head">Suplementos — orden de impacto real</div>
+    <div class="card-body">
+      <ul>
+        <li><strong>1. Creatina monohidratada 5 g/día</strong> — desde el día 1, sin ciclos, siempre</li>
+        <li><strong>2. Cafeína 200 mg pre-entreno</strong> — café negro funciona perfecto</li>
+        <li><strong>3. Whey protein</strong> — si no alcanzas los 170 g con comida</li>
+        <li><strong>4. Omega-3 / Fish oil</strong> — reduce inflamación, mejora composición corporal</li>
+        <li><strong>5. Vitamina D3 + Magnesio</strong> — impactan testosterona y sueño; déficit frecuente en México</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head">Lo que destruye el programa</div>
+    <div class="card-body">
+      <ul>
+        <li><strong>Alcohol</strong> — bloquea síntesis proteica y activa almacenamiento de grasa 24–48 hrs después</li>
+        <li><strong>Déficit &gt;700 kcal/día</strong> — catabolizas músculo, no solo grasa</li>
+        <li><strong>Falta de sueño</strong> — cortisol alto destruye músculo y retiene grasa abdominal. 7–8 hrs no es opcional</li>
+        <li><strong>Saltarse las descargas</strong> — sin ellas el SNC se agota y la fuerza se estanca o retrocede</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+function toggleDay(card) { card.classList.toggle('open'); }
+</script>
+</body>
+</html>
