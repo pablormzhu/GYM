@@ -2,932 +2,890 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BRUTAL PRO — Fuerza + Quema</title>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0b0b0c">
+<meta name="supported-color-schemes" content="dark">
+<title>PROTOCOLO — Bloque 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
-:root {
-  --bg:#0d0d0d; --s1:#141414; --s2:#1a1a1a;
-  --line:#252525; --line2:#333;
-  --fire:#ff5c00; --ice:#00c8ff; --lime:#c6f135;
-  --white:#f2f2f2; --grey:#777; --grey2:#444;
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  color-scheme:dark;
+  --bg:#0b0b0c; --s1:#141517; --s2:#1a1b1e;
+  --line:#25272b; --line2:#33363b;
+  --white:#f2f2f0; --text:#c2c4c8; --grey:#8f9298; --grey2:#5f636a;
+  --orange:#ff5c00; --lime:#c6f135; --cyan:#00c8ff;
+  --pad:1rem;
 }
-body { background:var(--bg); color:var(--white); font-family:'IBM Plex Sans',sans-serif; min-height:100vh; overflow-x:hidden; }
-body::after {
-  content:''; position:fixed; inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-  pointer-events:none; z-index:9999; opacity:.5;
+
+/* El fondo se declara en html, body y en el contenedor .app.
+   Así el modo claro del sistema no puede blanquear la página. */
+html{background-color:#0b0b0c;-webkit-text-size-adjust:100%}
+body{
+  background-color:#0b0b0c;color:var(--white);
+  font-family:'IBM Plex Sans',system-ui,-apple-system,sans-serif;font-weight:300;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  overflow-wrap:break-word;
 }
-.hero { padding:3.5rem 2.5rem 2rem; border-bottom:1px solid var(--line); position:relative; overflow:hidden; }
-.hero-bg-text { position:absolute; right:-1rem; bottom:-1.5rem; font-family:'Anton',sans-serif; font-size:clamp(7rem,22vw,15rem); color:transparent; -webkit-text-stroke:1px var(--line); line-height:1; pointer-events:none; user-select:none; letter-spacing:-.02em; }
-.kicker { font-family:'IBM Plex Mono',monospace; font-size:.6rem; font-weight:500; letter-spacing:.18em; text-transform:uppercase; color:var(--fire); margin-bottom:.9rem; }
-.hero h1 { font-family:'Anton',sans-serif; font-size:clamp(3.8rem,12vw,7rem); line-height:.9; letter-spacing:-.01em; text-transform:uppercase; }
-.hero h1 em { color:var(--fire); font-style:normal; }
-.hero-meta { display:flex; gap:2rem; margin-top:1.4rem; flex-wrap:wrap; }
-.meta-item { display:flex; flex-direction:column; gap:.2rem; }
-.meta-val { font-family:'Anton',sans-serif; font-size:1.7rem; color:var(--lime); line-height:1; }
-.meta-lbl { font-family:'IBM Plex Mono',monospace; font-size:.55rem; letter-spacing:.12em; text-transform:uppercase; color:var(--grey); }
-.pillars { display:grid; grid-template-columns:repeat(4,1fr); border-bottom:1px solid var(--line); }
-.pillar { padding:1.2rem 1.5rem; border-right:1px solid var(--line); }
-.pillar:last-child { border-right:none; }
-.pillar-icon { font-size:1.3rem; margin-bottom:.5rem; }
-.pillar-name { font-family:'IBM Plex Mono',monospace; font-size:.58rem; text-transform:uppercase; letter-spacing:.12em; color:var(--grey); margin-bottom:.3rem; }
-.pillar-val { font-family:'Anton',sans-serif; font-size:1.1rem; color:var(--white); letter-spacing:.02em; line-height:1.2; }
-.nav { display:flex; overflow-x:auto; scrollbar-width:none; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:100; background:var(--bg); }
-.nav::-webkit-scrollbar { display:none; }
-.nav-btn { flex-shrink:0; background:none; border:none; cursor:pointer; font-family:'IBM Plex Mono',monospace; font-size:.62rem; text-transform:uppercase; letter-spacing:.12em; color:var(--grey); padding:.9rem 1.6rem; border-bottom:2px solid transparent; transition:color .15s,border-color .15s; white-space:nowrap; }
-.nav-btn:hover { color:var(--white); }
-.nav-btn.active { color:var(--fire); border-bottom-color:var(--fire); }
-.content { max-width:860px; margin:0 auto; padding:2rem 2rem 4rem; }
-.tab { display:none; }
-.tab.active { display:block; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-.tab.active > * { animation:fadeUp .28s ease forwards; }
-.sec-head { display:flex; align-items:baseline; gap:1rem; margin-bottom:1.8rem; }
-.sec-num { font-family:'Anton',sans-serif; font-size:4rem; color:var(--line2); line-height:1; }
-.sec-title { font-family:'Anton',sans-serif; font-size:2rem; letter-spacing:.02em; text-transform:uppercase; line-height:1; }
-.sec-sub { font-family:'IBM Plex Mono',monospace; font-size:.58rem; color:var(--grey); text-transform:uppercase; letter-spacing:.1em; margin-top:.25rem; }
-.day { border:1px solid var(--line); margin-bottom:.7rem; overflow:hidden; }
-.day-head { display:flex; align-items:center; gap:1.2rem; padding:1rem 1.5rem; background:var(--s1); cursor:pointer; transition:background .12s; user-select:none; }
-.day-head:hover { background:var(--s2); }
-.day-num { font-family:'Anton',sans-serif; font-size:2.2rem; color:var(--line2); min-width:2.2rem; line-height:1; }
-.day-info { flex:1; }
-.day-name { font-family:'Anton',sans-serif; font-size:1.15rem; letter-spacing:.03em; text-transform:uppercase; line-height:1; }
-.day-tag { font-family:'IBM Plex Mono',monospace; font-size:.55rem; text-transform:uppercase; letter-spacing:.1em; margin-top:.25rem; }
-.tag-push{color:var(--fire)} .tag-pull{color:var(--ice)} .tag-legs{color:var(--lime)} .tag-hiit{color:var(--fire)} .tag-full{color:#c084fc} .tag-rest{color:var(--grey)}
-.day-arr { font-size:.75rem; color:var(--grey); transition:transform .2s; }
-.day.open .day-arr { transform:rotate(180deg); }
-.day-body { display:none; border-top:1px solid var(--line); background:var(--bg); padding:1.5rem; }
-.day.open .day-body { display:block; }
-.blk-label { font-family:'IBM Plex Mono',monospace; font-size:.58rem; text-transform:uppercase; letter-spacing:.15em; color:var(--fire); padding-bottom:.4rem; border-bottom:1px solid var(--line2); margin-bottom:.9rem; }
-.blk-label.blue{color:var(--ice)} .blk-label.green{color:var(--lime)}
-.t { width:100%; border-collapse:collapse; margin-bottom:1.4rem; }
-.t th { font-family:'IBM Plex Mono',monospace; font-size:.53rem; text-transform:uppercase; letter-spacing:.1em; color:var(--grey); padding:.4rem .7rem; text-align:left; border-bottom:1px solid var(--line); }
-.t td { padding:.75rem .7rem; border-bottom:1px solid var(--line2); vertical-align:top; }
-.t tr:last-child td { border-bottom:none; }
-.t-name { font-weight:500; color:var(--white); font-size:.88rem; }
-.t-note { font-family:'IBM Plex Mono',monospace; font-size:.65rem; color:var(--grey); margin-top:.2rem; }
-.t-reps { font-family:'IBM Plex Mono',monospace; font-size:.8rem; color:var(--lime); white-space:nowrap; }
-.t-clave { font-size:.78rem; color:#aaa; }
-.b { display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:.52rem; font-weight:600; text-transform:uppercase; letter-spacing:.06em; padding:.12rem .5rem; border-radius:2px; }
-.b-smith{background:rgba(255,92,0,.15);color:var(--fire)} .b-comp{background:rgba(198,241,53,.1);color:var(--lime)} .b-iso{background:rgba(255,255,255,.06);color:var(--grey)} .b-bw{background:rgba(192,132,252,.1);color:#c084fc}
-.callout { padding:.9rem 1.1rem; border-left:3px solid var(--fire); background:rgba(255,92,0,.05); margin:.8rem 0 1.2rem; }
-.callout p { font-size:.82rem; color:#bbb; line-height:1.65; }
-.callout strong { color:var(--fire); }
-.callout.blue{border-left-color:var(--ice);background:rgba(0,200,255,.04)} .callout.blue strong{color:var(--ice)}
-.callout.green{border-left-color:var(--lime);background:rgba(198,241,53,.04)} .callout.green strong{color:var(--lime)}
-.card { border:1px solid var(--line); margin-bottom:.9rem; overflow:hidden; }
-.card-head { background:var(--s1); padding:.7rem 1.2rem; font-family:'Anton',sans-serif; font-size:.95rem; color:var(--lime); letter-spacing:.04em; border-bottom:1px solid var(--line); }
-.card-body { padding:1.1rem 1.2rem; font-size:.83rem; color:#bbb; line-height:1.8; }
-.card-body li { margin-left:1.1rem; margin-bottom:.2rem; }
-.ov-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:1.5rem; }
-.ov-cell { background:var(--s1); padding:1.4rem; }
-.ov-cell h3 { font-family:'Anton',sans-serif; font-size:1rem; color:var(--fire); letter-spacing:.04em; margin-bottom:.7rem; }
-.ov-cell li, .ov-cell p { font-size:.83rem; color:#bbb; line-height:1.75; }
-.ov-cell ul { padding-left:1.1rem; }
-.macro-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:1.5rem; }
-.macro-cell { background:var(--s1); padding:1.5rem; text-align:center; }
-.macro-n { font-family:'Anton',sans-serif; font-size:3rem; color:var(--lime); line-height:1; }
-.macro-l { font-family:'IBM Plex Mono',monospace; font-size:.55rem; text-transform:uppercase; letter-spacing:.1em; color:var(--grey); margin-top:.3rem; }
-.macro-s { font-size:.73rem; color:#777; margin-top:.35rem; }
-.prog-t { width:100%; border-collapse:collapse; margin-bottom:1.5rem; }
-.prog-t th { font-family:'IBM Plex Mono',monospace; font-size:.55rem; text-transform:uppercase; letter-spacing:.1em; color:var(--grey); padding:.55rem .8rem; text-align:left; background:var(--s1); border-bottom:1px solid var(--line); }
-.prog-t td { padding:.65rem .8rem; border-bottom:1px solid var(--line2); font-size:.82rem; color:#ccc; }
-.prog-t tr:last-child td { border-bottom:none; }
-.prog-lift { font-weight:500; color:var(--white); }
-.phase-row { display:flex; align-items:center; gap:1rem; padding:.85rem 0; border-bottom:1px solid var(--line); }
-.phase-w { font-family:'Anton',sans-serif; font-size:1.4rem; color:var(--line2); min-width:2.8rem; }
-.phase-track { flex:1; height:3px; background:var(--line2); }
-.phase-fill { height:100%; background:var(--fire); }
-.phase-fill.deload{background:var(--ice)} .phase-fill.peak{background:var(--lime)}
-.phase-lbl { font-family:'IBM Plex Mono',monospace; font-size:.62rem; text-transform:uppercase; letter-spacing:.08em; color:var(--grey); min-width:9rem; text-align:right; }
-.rest-block { background:var(--s1); border:1px solid var(--line); padding:2rem; text-align:center; margin:.7rem 0; }
-.rest-block p { font-family:'Anton',sans-serif; font-size:1.4rem; color:var(--grey); letter-spacing:.04em; }
-.rest-block span { font-family:'IBM Plex Mono',monospace; font-size:.62rem; color:var(--grey2); display:block; margin-top:.4rem; text-transform:uppercase; letter-spacing:.1em; }
-@media(max-width:600px){
-  .pillars{grid-template-columns:repeat(2,1fr)} .ov-grid{grid-template-columns:1fr} .macro-grid{grid-template-columns:1fr}
-  .content{padding:1.2rem 1rem 3rem} .t th:nth-child(4),.t td:nth-child(4){display:none} .hero{padding:2.5rem 1.2rem 1.5rem}
+.app{background-color:var(--bg);min-height:100vh;padding-bottom:3rem}
+
+@media (prefers-color-scheme: light){
+  html,body,.app{background-color:#0b0b0c;color:#f2f2f0}
 }
+
+.anton{font-family:'Anton',Impact,sans-serif;font-weight:400;text-transform:uppercase;line-height:.95}
+
+/* ── TOPBAR ── */
+.topbar{position:sticky;top:0;z-index:100;background-color:#0b0b0c;border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.tabs{display:flex}
+.tabs button{
+  flex:1 1 0;min-width:0;background:none;border:none;border-bottom:2px solid transparent;
+  cursor:pointer;color:var(--grey);font-family:'IBM Plex Mono',monospace;
+  font-size:.63rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  padding:1rem .3rem;transition:color .15s,border-color .15s;
+}
+.tabs button[aria-selected="true"]{color:var(--orange);border-bottom-color:var(--orange)}
+.tabs button:focus-visible{outline:2px solid var(--orange);outline-offset:-3px}
+
+.wrap{max-width:660px;margin:0 auto;padding:0 var(--pad)}
+.view{display:none}
+.view[data-on="true"]{display:block}
+
+/* ── HERO ── */
+.hero{padding:2.5rem 0 2rem;border-bottom:1px solid var(--line)}
+.kicker{font-family:'IBM Plex Mono',monospace;font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--orange);margin-bottom:1.1rem;line-height:1.7}
+.hero h1{font-family:'Anton',sans-serif;font-size:clamp(2.7rem,14vw,5rem);line-height:.9;text-transform:uppercase;color:var(--white)}
+.hero h1 em{color:var(--orange);font-style:normal}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem 1rem;margin-top:2.1rem}
+.stat b{display:block;font-family:'Anton',sans-serif;font-size:1.9rem;color:var(--lime);line-height:1}
+.stat span{display:block;font-family:'IBM Plex Mono',monospace;font-size:.55rem;letter-spacing:.13em;text-transform:uppercase;color:var(--grey);margin-top:.4rem;line-height:1.5}
+
+/* ── SECTION ── */
+.sec{padding:2.1rem 0 0}
+.sec > h2{font-family:'Anton',sans-serif;font-size:1.55rem;text-transform:uppercase;line-height:1;margin-bottom:.5rem;color:var(--white)}
+.sec > .lead{color:var(--grey);font-size:.92rem;line-height:1.65;margin-bottom:1.2rem}
+
+/* ── SPLIT ── */
+.split{border-top:1px solid var(--line)}
+.split-row{display:flex;gap:.85rem;padding:.95rem 0;border-bottom:1px solid var(--line);align-items:flex-start}
+.split-row .d{flex:0 0 2.2rem;font-family:'Anton',sans-serif;font-size:.88rem;color:var(--grey2);padding-top:.15rem}
+.split-row .t{flex:1 1 auto;min-width:0}
+.split-row .t b{display:block;font-weight:600;font-size:.96rem;line-height:1.3}
+.split-row.fierro .t b{color:var(--orange)}
+.split-row.bjj .t b{color:var(--cyan)}
+.split-row .sub{display:block;font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--grey2);margin-top:.3rem;line-height:1.5}
+.split-row .min{flex:0 0 auto;font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--grey);white-space:nowrap;padding-top:.2rem}
+
+/* ── CARD ── */
+.card{background-color:var(--s1);border:1px solid var(--line);border-radius:6px;padding:1.05rem;margin-bottom:.7rem}
+.card h3{font-family:'Anton',sans-serif;font-size:1rem;text-transform:uppercase;line-height:1.2;color:var(--lime);margin-bottom:.55rem}
+.card p{font-size:.92rem;line-height:1.65;color:var(--text)}
+.card p + p{margin-top:.65rem}
+.card.o h3{color:var(--orange)}
+.card.c h3{color:var(--cyan)}
+
+/* ── TAGS ── */
+.tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.54rem;font-weight:600;letter-spacing:.11em;text-transform:uppercase;padding:.22rem .45rem;border-radius:3px;white-space:nowrap;line-height:1.3;vertical-align:middle}
+.tag.t-pes{background-color:rgba(255,92,0,.17);color:var(--orange)}
+.tag.t-mod{background-color:rgba(0,200,255,.14);color:var(--cyan)}
+.tag.t-pri{background-color:rgba(198,241,53,.14);color:var(--lime)}
+
+/* ── DAY ACCORDION ── */
+details.day{border:1px solid var(--line);border-radius:6px;margin-bottom:.6rem;background-color:var(--s1);overflow:hidden}
+details.day > summary{list-style:none;cursor:pointer;padding:.95rem var(--pad);display:flex;align-items:center;gap:.85rem;user-select:none}
+details.day > summary::-webkit-details-marker{display:none}
+summary .letter{flex:0 0 1.4rem;font-family:'Anton',sans-serif;font-size:1.7rem;color:var(--grey2);line-height:1}
+summary .info{flex:1 1 auto;min-width:0}
+summary .title{display:block;font-family:'Anton',sans-serif;font-size:1.08rem;text-transform:uppercase;line-height:1.15;color:var(--white)}
+summary .meta{display:block;font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);margin-top:.35rem;line-height:1.5}
+summary .arrow{flex:0 0 auto;color:var(--grey2);font-size:.6rem;transition:transform .2s}
+details[open] > summary .arrow{transform:rotate(180deg)}
+details.day[open] > summary{background-color:var(--s2);border-bottom:1px solid var(--line)}
+details.day[open] > summary .title{color:var(--orange)}
+summary:focus-visible{outline:2px solid var(--orange);outline-offset:-3px}
+
+/* ── BLOCK LABEL ── */
+.blk{font-family:'IBM Plex Mono',monospace;font-size:.57rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:var(--orange);padding:1.1rem var(--pad) .55rem;line-height:1.5}
+.blk.cy{color:var(--cyan)} .blk.li{color:var(--lime)}
+
+/* ── EXERCISE ── */
+.exs{border-top:1px solid var(--line)}
+.ex{border-bottom:1px solid var(--line);padding:.95rem var(--pad)}
+.ex:last-child{border-bottom:none}
+.ex.pair{background-color:rgba(0,200,255,.035)}
+.ex-top{display:flex;align-items:baseline;gap:.9rem;justify-content:space-between}
+.ex-name{flex:1 1 auto;min-width:0;font-size:.99rem;font-weight:500;line-height:1.3;color:var(--white)}
+.ex-sets{flex:0 0 auto;font-family:'IBM Plex Mono',monospace;font-size:.87rem;font-weight:600;color:var(--white);white-space:nowrap}
+.ex-sub{display:flex;align-items:center;gap:.5rem .6rem;flex-wrap:wrap;margin-top:.6rem}
+.ex-rest{font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.04em;text-transform:uppercase;color:var(--grey);line-height:1.5}
+.ex-rest b{color:var(--text);font-weight:500}
+
+/* ── DETALLE ── */
+details.dd{border:none;background:none;margin-top:.7rem}
+details.dd > summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:.45rem;padding:.15rem 0}
+details.dd > summary::-webkit-details-marker{display:none}
+details.dd > summary .lbl{font-family:'IBM Plex Mono',monospace;font-size:.57rem;font-weight:500;letter-spacing:.11em;text-transform:uppercase;color:var(--grey);line-height:1.4}
+details.dd > summary .arrow{flex:0 0 auto;font-size:.48rem;color:var(--grey)}
+details.dd[open] > summary .lbl,details.dd[open] > summary .arrow{color:var(--cyan)}
+.dd-body{padding-top:.7rem;display:flex;flex-direction:column;gap:.45rem}
+.bit{padding:.7rem .8rem;background-color:var(--s2);border-left:2px solid var(--line2);border-radius:0 4px 4px 0}
+.bit .k{display:block;font-family:'IBM Plex Mono',monospace;font-size:.54rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);margin-bottom:.3rem;line-height:1.5}
+.bit p{font-size:.89rem;line-height:1.6;color:var(--text)}
+.bit.up{border-left-color:var(--lime)} .bit.up .k{color:var(--lime)}
+.bit.no{border-left-color:var(--orange)} .bit.no .k{color:var(--orange)}
+
+/* ── PLAIN ── */
+.plain{padding:.95rem var(--pad);border-bottom:1px solid var(--line)}
+.plain:last-child{border-bottom:none}
+.plain h4{font-family:'Anton',sans-serif;font-size:.96rem;text-transform:uppercase;line-height:1.2;margin-bottom:.35rem;color:var(--white)}
+.plain p{font-size:.91rem;line-height:1.6;color:var(--text)}
+
+.note{padding:.85rem .9rem;background-color:rgba(255,92,0,.07);border-left:2px solid var(--orange);margin:.9rem var(--pad) 0;border-radius:0 4px 4px 0}
+.note p{font-size:.89rem;line-height:1.6;color:var(--text)}
+.note b{color:var(--orange);font-weight:600}
+.note.cy{background-color:rgba(0,200,255,.06);border-left-color:var(--cyan)}
+.note.cy b{color:var(--cyan)}
+
+footer{padding:2.4rem var(--pad);text-align:center;border-top:1px solid var(--line);margin-top:2.4rem}
+footer p{font-family:'IBM Plex Mono',monospace;font-size:.58rem;letter-spacing:.11em;text-transform:uppercase;color:var(--grey2);line-height:2}
+
+@media(min-width:520px){
+  .stats{grid-template-columns:repeat(4,1fr)}
+  :root{--pad:1.25rem}
+  .tabs button{font-size:.67rem;letter-spacing:.16em}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
+<div class="app">
 
-<div class="hero">
-  <div class="hero-bg-text">BRK</div>
-  <div class="kicker">Programa 11 semanas · 1.83 m · 85 kg · Retorno con base sólida</div>
-  <h1>Fuerza<br><em>brutal.</em><br>Grasa<br><em>cero.</em></h1>
-  <div class="hero-meta">
-    <div class="meta-item"><div class="meta-val">11</div><div class="meta-lbl">Semanas</div></div>
-    <div class="meta-item"><div class="meta-val">5</div><div class="meta-lbl">Días/semana</div></div>
-    <div class="meta-item"><div class="meta-val">3</div><div class="meta-lbl">Fases</div></div>
-    <div class="meta-item"><div class="meta-val">300–500</div><div class="meta-lbl">Déficit kcal/día</div></div>
+<div class="topbar">
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="false" data-v="inicio">Inicio</button>
+    <button role="tab" aria-selected="true" data-v="semana">Semana</button>
+    <button role="tab" aria-selected="false" data-v="comodin">Comodines</button>
   </div>
 </div>
 
-<div class="pillars">
-  <div class="pillar"><div class="pillar-icon">🏋️</div><div class="pillar-name">Punto de partida</div><div class="pillar-val">Bench ~90 kg<br>Pull-ups 5+ reps</div></div>
-  <div class="pillar"><div class="pillar-icon">🎯</div><div class="pillar-name">Objetivo sem 11</div><div class="pillar-val">Bench 110+ kg<br>Pull-ups con peso</div></div>
-  <div class="pillar"><div class="pillar-icon">🔥</div><div class="pillar-name">Cardio</div><div class="pillar-val">HIIT + estado<br>estable</div></div>
-  <div class="pillar"><div class="pillar-icon">⚡</div><div class="pillar-name">Regla de oro</div><div class="pillar-val">+2.5 kg en Smith<br>cada semana</div></div>
+<!-- ══════ INICIO ══════ -->
+<section class="view" data-view="inicio">
+<div class="wrap">
+
+  <div class="hero">
+    <div class="kicker">Bloque 1 · 8 semanas · Fuerza primero</div>
+    <h1 class="anton">Más fuerte<br><em>que nunca.</em></h1>
+    <div class="stats">
+      <div class="stat"><b>8</b><span>Semanas</span></div>
+      <div class="stat"><b>3</b><span>Días de fierro</span></div>
+      <div class="stat"><b>2</b><span>Días de jiu-jitsu</span></div>
+      <div class="stat"><b>2</b><span>Días de descarga</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2 class="anton">Las etiquetas</h2>
+    <p class="lead">Cada ejercicio trae una. Te dice de una si ahí te vas con todo o no.</p>
+    <div class="card o">
+      <h3><span class="tag t-pes">Pesado</span></h3>
+      <p>El peso más alto con el que completes el rango. Aquí se construye la fuerza. Paras cuando sientas que te quedan 2 reps buenas: eso te deja repetir la serie siguiente igual de fuerte y llegar entero al jiu-jitsu.</p>
+    </div>
+    <div class="card c">
+      <h3><span class="tag t-mod">Moderado</span></h3>
+      <p>Aquí no buscas máximos. Peso con el que la técnica aguanta las series completas y limpias. Si te pones a competir en estos, te robas la energía de los pesados, que son los que mueven la aguja.</p>
+    </div>
+    <div class="card">
+      <h3><span class="tag t-pri">Prioritario</span></h3>
+      <p>El primer ejercicio de cada día de fierro. Es el único donde puedes meter una cuarta serie, y solo si la semana viene bien: los principales subiendo, el jiu-jitsu sintiéndose bien y sin molestias en hombro, codo o rodilla. Si algo de eso no se cumple, tres.</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2 class="anton">El split</h2>
+    <p class="lead">El fierro nunca cae el mismo día que el jiu-jitsu. Los tiempos son reales, medidos con los descansos que trae cada ejercicio.</p>
+    <div class="split">
+      <div class="split-row bjj"><span class="d">Lun</span><span class="t"><b>Caminata + jiu-jitsu</b><span class="sub">Mañana y noche</span></span><span class="min">45 m · 2 h</span></div>
+      <div class="split-row fierro"><span class="d">Mar</span><span class="t"><b>Fuerza A</b><span class="sub">Sentadilla y banca</span></span><span class="min">65 min</span></div>
+      <div class="split-row bjj"><span class="d">Mié</span><span class="t"><b>Calistenia + jiu-jitsu</b><span class="sub">Mañana y noche</span></span><span class="min">30 m · 2 h</span></div>
+      <div class="split-row fierro"><span class="d">Jue</span><span class="t"><b>Fuerza B</b><span class="sub">Cadera y press militar</span></span><span class="min">65 min</span></div>
+      <div class="split-row"><span class="d">Vie</span><span class="t"><b>Alberca y caminata</b><span class="sub">Descarga · cero pesas</span></span><span class="min">40 min</span></div>
+      <div class="split-row fierro"><span class="d">Sáb</span><span class="t"><b>Fuerza C</b><span class="sub">Volumen y acarreos</span></span><span class="min">65 min</span></div>
+      <div class="split-row"><span class="d">Dom</span><span class="t"><b>Caminata y movilidad</b><span class="sub">Descarga · sesión de movilidad</span></span><span class="min">60 min</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2 class="anton">Cómo se progresa</h2>
+    <p class="lead">Aquí no hay pesos escritos porque los pesos son tuyos y cambian cada semana. Lo que está escrito es el rango, y el rango decide el peso.</p>
+    <div class="card o">
+      <h3>La regla</h3>
+      <p>Cada ejercicio tiene un rango. Si sacas el tope del rango en todas las series, la próxima vez le subes. Si te quedas en medio, repites el mismo peso. Si no llegas ni al mínimo, le bajas 10%.</p>
+    </div>
+    <div class="card">
+      <h3>Cuánto le subes</h3>
+      <p>Tren superior 5 lb. Tren inferior y cadera 10 lb. Cuando dudes, el salto chico: subir de 5 en 5 durante ocho semanas te deja más arriba que subir de 20 y estancarte en la tercera.</p>
+    </div>
+    <div class="card">
+      <h3>Velocidad en la subida</h3>
+      <p>En sentadilla y banca la bajada es controlada y la subida se empuja con máxima intención de ir rápido, aunque la barra se mueva lento porque el peso está alto. Esa intención es tu trabajo de potencia por ahora. No metemos saltos hasta que tengas base de pierna.</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2 class="anton">Semanas 1 y 2</h2>
+    <p class="lead">Calibración y rampa. No es arrancar suave, es arrancar bien.</p>
+    <div class="card o">
+      <h3>Semana 1: dos series en los principales</h3>
+      <p>Esa semana te caen encima cuatro cosas nuevas al mismo tiempo: sentadilla que nunca has cargado, peso muerto rumano nuevo, el regreso al jiu-jitsu con dos clases de dos horas, y la sesión de calistenia. La tercera serie entra desde la semana 2.</p>
+    </div>
+    <div class="card">
+      <h3>Cómo encuentras tu peso</h3>
+      <p>Antes del primer ejercicio pesado: 5 minutos de calentamiento general, luego barra sola u 8–10 reps muy ligeras, luego 5 reps, luego 3 reps, y una o dos opcionales. Nada de eso cuenta como serie de trabajo.</p>
+      <p>Semana 1: elige un peso con el que estés seguro de sacar el tope del rango dejando 3 o 4 reps de sobra. Anota reps y qué tan fácil salió. Semana 2: súbele el incremento. Semana 3: ya estás en tu peso real y llegaste sin haber fallado nunca.</p>
+      <p>Lo que no se hace: subirle dentro de la misma sesión hasta que la última rep cueste. Eso te quema el día y te deja un número inflado que no vas a poder repetir.</p>
+    </div>
+    <div class="card">
+      <h3>Sentadilla y peso muerto rumano arrancan en 6–8</h3>
+      <p>No tienes ni una serie de pierna registrada. Las primeras dos semanas van en 6–8 para que el patrón y el tejido conectivo se acomoden, y desde la semana 3 bajan a 4–6 como el resto de los principales.</p>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2 class="anton">La regla de revisión</h2>
+    <p class="lead">El volumen no se recorta por adelantado. Se recorta cuando los datos lo pidan.</p>
+    <div class="card"><h3>Si todo va bien, no tocas nada</h3><p>Los principales progresando, el jiu-jitsu sintiéndose bien y sin molestias articulares: el volumen se conserva completo.</p></div>
+    <div class="card"><h3>Si un principal retrocede dos sesiones seguidas</h3><p>Quitas una serie del accesorio menos importante de ese día. Si a la tercera sigue retrocediendo, quitas el accesorio completo esa semana.</p></div>
+    <div class="card"><h3>Lo que nunca se recorta primero</h3><p>Los levantamientos principales y la calistenia del miércoles. Esos son el programa; lo demás es lo que se ajusta alrededor.</p></div>
+    <div class="card"><h3>Semana 6 es descarga</h3><p>Mismos pesos, la mitad de las series, terminando con 3 o 4 reps de sobra. Una semana. Adelántala si dos sesiones seguidas se sienten peores con el mismo peso.</p></div>
+  </div>
+
+  <div class="sec">
+    <h2 class="anton">Las reglas</h2>
+    <div class="card"><h3>Los primeros son los que importan</h3><p>Si se te acaba el tiempo cortas los de abajo, nunca los primeros dos. Media sesión con lo pesado completo vale más que una sesión entera apurada.</p></div>
+    <div class="card"><h3>Descansa completo</h3><p>Los 3 minutos entre series pesadas son lo que te deja mover el mismo peso otra vez. Apurarte te cuesta reps, y las reps son las que hacen que subas.</p></div>
+    <div class="card"><h3>Sesión perdida no se repone</h3><p>Si te saltas el jueves, el jueves no existe. Sigues con el sábado en el peso que ibas. No puedes ir atrasado porque el peso lo decide tu última sesión, no el calendario.</p></div>
+    <div class="card"><h3>Come alrededor del entreno</h3><p>Los días de fierro la comida va antes o justo después de levantar. La caminata del lunes en ayuno está perfecta. Levantar pesado en la hora 18 de ayuno no.</p></div>
+  </div>
+
+  <div class="sec">
+    <h2 class="anton">Qué se mide</h2>
+    <div class="card"><h3>Los números</h3><p>Kilos en banca, sentadilla, peso muerto rumano y press militar. Dominadas seguidas. Segundos de colgado con gi. Segundos de parada de manos. Vueltas del comodín cuando lo uses de prueba.</p></div>
+    <div class="card"><h3>El cuerpo</h3><p>Peso al despertar todos los días, pero mirando el promedio de siete días, no el número suelto. Cintura una vez por semana. Foto cada dos semanas, misma hora y misma luz.</p></div>
+  </div>
+
 </div>
+</section>
 
-<nav class="nav">
-  <button class="nav-btn active" onclick="showTab('overview',this)">Inicio</button>
-  <button class="nav-btn" onclick="showTab('fase1',this)">Fase 1 · Sem 1–3</button>
-  <button class="nav-btn" onclick="showTab('fase2',this)">Fase 2 · Sem 4–7</button>
-  <button class="nav-btn" onclick="showTab('fase3',this)">Fase 3 · Sem 8–11</button>
-  <button class="nav-btn" onclick="showTab('progresion',this)">Progresión</button>
-  <button class="nav-btn" onclick="showTab('nutricion',this)">Nutrición</button>
-</nav>
+<!-- ══════ SEMANA ══════ -->
+<section class="view" data-view="semana" data-on="true">
+<div class="wrap" style="padding-top:1.2rem">
 
-<div class="content">
-
-<!-- ── INICIO ── -->
-<div class="tab active" id="overview">
-  <div class="ov-grid">
-    <div class="ov-cell">
-      <h3>Split semanal</h3>
-      <ul>
-        <li><strong style="color:var(--fire)">Lun</strong> — Empuje: pecho · hombro · tríceps</li>
-        <li><strong style="color:var(--ice)">Mar</strong> — Jalón: espalda · bíceps</li>
-        <li><strong style="color:var(--lime)">Mié</strong> — HIIT + Core</li>
-        <li><strong style="color:var(--fire)">Jue</strong> — Piernas: cuád · isquio · glúteo</li>
-        <li><strong style="color:#c084fc">Vie</strong> — Full Body + cardio estado estable</li>
-        <li><strong style="color:var(--grey2)">Sáb/Dom</strong> — Descanso activo</li>
-      </ul>
-    </div>
-    <div class="ov-cell">
-      <h3>Tu perfil</h3>
-      <p>Tienes base real y fuerza funcional — el cuerpo recuerda. La Fase 1 es reactivación, no aprendizaje. Cargas altas desde el día 1. El sistema nervioso central se reactiva en 2–3 semanas y desde ahí la fuerza sube rápido. El déficit calórico moderado garantiza que pierdes grasa sin sacrificar las ganancias de fuerza.</p>
-    </div>
-    <div class="ov-cell">
-      <h3>Estructura de 11 semanas</h3>
-      <ul>
-        <li><strong style="color:var(--fire)">Fase 1 · Sem 1–3:</strong> Reactivación. Cargas altas, volumen moderado. Sem 3 = descarga.</li>
-        <li><strong style="color:var(--lime)">Fase 2 · Sem 4–7:</strong> Carga máxima progresiva + drop sets + superseries. Sem 7 = descarga.</li>
-        <li><strong style="color:var(--ice)">Fase 3 · Sem 8–11:</strong> Rest-Pause, Giant Sets, Myo-reps. Sem 11 = peak + test.</li>
-      </ul>
-    </div>
-    <div class="ov-cell">
-      <h3>Reglas de oro</h3>
-      <ul>
-        <li>Tempo en Smith: <strong>3-1-2</strong> siempre</li>
-        <li>Pull-ups: rango completo — nada de medio rep</li>
-        <li>Descanso big lifts: <strong>2–3 min</strong></li>
-        <li>Descanso accesorios: <strong>60–90 seg</strong></li>
-        <li>Completas todas las reps → +2.5 kg la siguiente semana</li>
-        <li>Sueño 7–8 hrs · Agua 3 L/día mínimo</li>
-      </ul>
+<!-- LUNES -->
+<details class="day" data-d="lun">
+  <summary><span class="letter">L</span><span class="info"><span class="title">Lunes — Jiu-jitsu</span><span class="meta">Caminata 45 min · clase 2 h</span></span><span class="arrow">▼</span></summary>
+  <div>
+    <div class="exs">
+      <div class="plain"><h4>Caminata · 45 min</h4><p>En la mañana, paso vivo: que puedas hablar pero no cantar. Esta sí en ayuno, sin bronca. Caminar no compite con nada.</p></div>
+      <div class="plain"><h4>Jiu-jitsu · 2 horas</h4><p>Es el día de más carga total de la semana y por eso hoy no hay fierro. Come antes de rodar.</p></div>
     </div>
   </div>
+</details>
+
+<!-- MARTES -->
+<details class="day" data-d="mar">
+  <summary><span class="letter">M</span><span class="info"><span class="title">Martes — Fuerza A</span><span class="meta">Sentadilla y banca · 65 min</span></span><span class="arrow">▼</span></summary>
+  <div>
+    <div class="blk">Lo pesado</div>
+    <div class="exs">
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Sentadilla en Smith</span><span class="ex-sets">3 × 4–6</span></div>
+        <div class="ex-sub"><span class="tag t-pri">Prioritario</span><span class="tag t-pes">Pesado</span><span class="ex-rest">Entre series <b>3 min</b> · al terminar <b>3 min</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo, cuándo subir y si no te sale</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Pies al ancho de hombros y un paso adelante de la barra, no debajo. Baja hasta que el muslo pase de paralelo al piso. Las rodillas van hacia donde apuntan los pies. Sube empujando con el talón, con intención de ir rápido.</p></div>
+            <div class="bit"><span class="k">Las primeras dos semanas</span><p>Van en 3 × 6–8, y en la semana 1 solo 2 series. Desde la semana 3 baja a 4–6. No tienes historial de pierna, así que el patrón se asienta antes de cargarlo al máximo.</p></div>
+            <div class="bit up"><span class="k">Cuándo subir de peso</span><p>Cuando saques 6 reps en las 3 series, le subes 10 lb. Si en la última no llegas a 4, bájale 10%. Aquí es donde puedes meter la cuarta serie si la semana viene bien.</p></div>
+            <div class="bit no"><span class="k">Si no te sale</span><p>Antes de empezar, deja los seguros de la Smith puestos a la altura donde te quedas abajo. Si se atora una rep, la dejas en los seguros y ya. No la peleas.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Press de banca en Smith</span><span class="ex-sets">3 × 4–6</span></div>
+        <div class="ex-sub"><span class="tag t-pes">Pesado</span><span class="ex-rest">Entre series <b>3 min</b> · al terminar <b>3 min</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo, cuándo subir y si no te sale</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Banca plana bajo la barra. Baja hasta tocar el pecho con los codos en un ángulo cómodo para tu hombro, ni pegados a las costillas ni abiertos en cruz. Sube empujando con intención de ir rápido aunque la barra se mueva lento.</p></div>
+            <div class="bit up"><span class="k">Cuándo subir de peso</span><p>Cuando saques 6 reps en las 3 series, le subes 5 lb. Si en la última no llegas a 4, bájale 10%.</p></div>
+            <div class="bit no"><span class="k">Si no te sale</span><p>Los seguros van puestos antes de la primera serie, a la altura del pecho. Si una rep se atora, la barra se queda en los seguros. Nada de arquear ni de rebotar en el pecho.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Dominadas</span><span class="ex-sets">3 × 4–6</span></div>
+        <div class="ex-sub"><span class="tag t-pes">Pesado</span><span class="ex-rest">Entre series <b>2.5 min</b> · al terminar <b>2 min</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo, cuándo subir y si no te sale</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Palmas hacia adelante, agarre un poco más ancho que los hombros. Sube hasta que la barbilla pase la barra y baja hasta estirar los brazos por completo. Sin patadas ni impulso de cadera.</p></div>
+            <div class="bit up"><span class="k">Cuándo progresas</span><p>Cuando saques 6 limpias en las 3 series, agarras una mancuerna con los pies cruzando los tobillos y vuelves a empezar en 4. Ese es el camino a dominada con peso, y es de los mejores indicadores de fuerza relativa que vas a tener.</p></div>
+            <div class="bit no"><span class="k">Si no llegas a 4</span><p>Sube con un saltito y bájate lo más lento que aguantes contando 5 segundos. Eso construye la siguiente repetición. No lo lleves al punto de quedarte colgado sin poder más: hoy no es el día de eso.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Remo inclinado en Smith</span><span class="ex-sets">2 × 6–8</span></div>
+        <div class="ex-sub"><span class="tag t-pes">Pesado</span><span class="ex-rest">Entre series <b>2 min</b> · al terminar <b>2 min</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo, cuándo subir y si no te sale</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Torso inclinado alrededor de 45 grados, rodillas suaves, espalda plana. Jala la barra hacia el ombligo, no hacia el pecho. Al final aprieta los omóplatos como si sostuvieras un lápiz entre ellos.</p></div>
+            <div class="bit up"><span class="k">Cuándo subir de peso</span><p>Cuando saques 8 reps en las 2 series, le subes 10 lb.</p></div>
+            <div class="bit no"><span class="k">Si no te sale</span><p>En cuanto el torso se empiece a mover para ayudarte, se acabó la serie. Ahí ya no es remo.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Elevación de piernas colgando</span><span class="ex-sets">3 × 8–15</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Entre series <b>90 seg</b> · fin de la sesión</span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo, cuándo subir y si no te sale</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Cuélgate con los hombros activos, empujando un poco hacia abajo, no colgado muerto. Sube las piernas rectas hasta la altura de la cadera y bájalas contando 2 segundos. Si el cuerpo se mece, para: el balanceo hace el trabajo y el abdomen deja de trabajar.</p></div>
+            <div class="bit up"><span class="k">Cuándo progresas</span><p>Cuando saques 15 con piernas rectas en las 3 series, súbelas más alto hasta tocar la barra con los pies. Este y el crunch en polea son los dos que sí construyen el recto abdominal.</p></div>
+            <div class="bit no"><span class="k">Si no llegas a 8</span><p>Dobla las rodillas y súbelas al pecho. Si lo que se acaba es el agarre y no el abdomen, hazlas apoyando los antebrazos en el respaldo del banco.</p></div>
+          </div>
+        </details>
+      </div>
+
+    </div>
+
+    <div class="blk li">Después</div>
+    <div class="exs">
+      <div class="plain"><h4>Trote suave · 15 min · opcional</h4><p>Martes y jueves, después del fierro, nunca antes y nunca en día de jiu-jitsu. Ritmo en el que podrías platicar. A esa intensidad casi no le quita nada a las piernas; si lo conviertes en sprints, ahí sí te cuesta la sentadilla del sábado.</p></div>
+      <div class="plain"><h4>Caminata · 20–30 min</h4><p>Por la tarde, después de la chamba.</p></div>
+    </div>
+  </div>
+</details>
+
+<!-- MIÉRCOLES -->
+<details class="day" data-d="mie">
+  <summary><span class="letter">X</span><span class="info"><span class="title">Miércoles — Calistenia</span><span class="meta">30 min mañana · jiu-jitsu 2 h noche</span></span><span class="arrow">▼</span></summary>
+  <div>
+    <div class="note cy"><p><b>Esta sesión no se recorta.</b> Es tu bloque de fuerza relativa y control corporal, no un accesorio. Va en superseries para que quepa en 30 minutos reales sin quitarle ejercicios.</p></div>
+
+    <div class="blk">Habilidad</div>
+    <div class="exs">
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Parada de manos en la pared</span><span class="ex-sets">3–4 × 40–60 s</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Entre series <b>90 seg</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo, cuándo subir y si no te sale</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Va sola y primero porque es habilidad, y la habilidad se entrena descansado. Manos a un palmo de la pared, cuerpo estirado, panza apretada para no arquear la espalda.</p></div>
+            <div class="bit up"><span class="k">Cuándo progresas</span><p>Cuando el minuto se sienta cómodo, despega un pie de la pared y sostenlo 5 segundos. Luego el otro. Luego los dos. Ahí ya vas a parada libre.</p></div>
+            <div class="bit no"><span class="k">Si no aguantas</span><p>Haz las series con lo que sí aguantes aunque sean 25 segundos. Que los hombros se cansen antes que todo lo demás es lo que estás construyendo.</p></div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="blk cy">Superserie 1 · 3 vueltas</div>
+    <div class="exs">
+      <div class="ex pair">
+        <div class="ex-top"><span class="ex-name">Lagartijas en pica</span><span class="ex-sets">3 × 6–10</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Sin descanso · pasas al colgado</span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo, cuándo subir y si no te sale</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Cadera arriba formando una V invertida, pies caminados hacia las manos. Baja la coronilla hacia el piso entre las manos, no hacia adelante. Es press de hombro, no lagartija de pecho. Deja 2 o 3 reps de sobra.</p></div>
+            <div class="bit up"><span class="k">Cuándo progresas</span><p>Cuando saques 10 limpias en las 3 series, pon los pies arriba del sillón. Ese es tu camino a la flexión en parada de manos, que es el press vertical pesado que el fierro no te puede dar.</p></div>
+            <div class="bit no"><span class="k">Si no te salen</span><p>Camina los pies más cerca de las manos: se levanta más la cadera y te quitas peso de encima.</p></div>
+          </div>
+        </details>
+      </div>
+      <div class="ex pair">
+        <div class="ex-top"><span class="ex-name">Colgado con toalla o gi</span><span class="ex-sets">3 × 20–40 s</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Al terminar la vuelta <b>90 seg</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo, por qué va aquí y tu marcador</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Cuelga una toalla o el gi sobre la barra y agárrate de la tela, un lado con cada mano. Cuerpo colgado, hombros activos. Terminas la serie con 5 o 10 segundos todavía disponibles, no al máximo.</p></div>
+            <div class="bit"><span class="k">Por qué va el miércoles y no el martes</span><p>Aquí el agarre está fresco. El martes, después de dominadas y remo, ya está frito y el colgado mediría fatiga en vez de construir capacidad. Y de paso te prepara el agarre para rodar en la noche.</p></div>
+            <div class="bit up"><span class="k">Tu marcador</span><p>El máximo con gi se prueba solo al inicio y al final del bloque, nunca semanalmente. Como referencia: en jiu-jitsu, principiantes aguantan alrededor de 28 segundos y competidores nacionales e internacionales entre 54 y 62.</p></div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="blk cy">Superserie 2 · 3 vueltas</div>
+    <div class="exs">
+      <div class="ex pair">
+        <div class="ex-top"><span class="ex-name">Lagartija rotativa</span><span class="ex-sets">3 series</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Sin descanso · pasas al Pallof</span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo rota y cómo progresa</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo rota</span><p>Cada semana toca una: diamante, luego pies en el sillón, luego normales, y de vuelta. Diamante es tu mejor trabajo de tríceps con carga real, mejor que cualquier cosa que puedas hacer con mancuernas de 25 lb.</p></div>
+            <div class="bit"><span class="k">Cuántas reps</span><p>Deja 2 reps de sobra en cada serie. Nada al fallo el miércoles: en la noche hay dos horas de tatami y el jueves hay press militar pesado.</p></div>
+            <div class="bit up"><span class="k">Cuándo progresas</span><p>Cuando la variante de esa semana te salga a 15 reps dejando 2, súbele dificultad: pies más altos, mochila con peso, o pausa de un segundo abajo.</p></div>
+          </div>
+        </details>
+      </div>
+      <div class="ex pair">
+        <div class="ex-top"><span class="ex-name">Pallof press en polea</span><span class="ex-sets">2 × 8–12 c/lado</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Al terminar la vuelta <b>90 seg</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo se hace y para qué sirve</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>De pie de costado a la polea, a la altura del pecho. Agarras el mango con las dos manos pegado al esternón y lo empujas al frente hasta estirar los brazos, sin dejar que el torso gire hacia la polea. Regresas y repites. El trabajo es aguantar la rotación, no empujar.</p></div>
+            <div class="bit up"><span class="k">Cuándo subir de peso</span><p>Cuando saques 12 por lado sin que el torso se te vaya, le subes 10 lb.</p></div>
+            <div class="bit"><span class="k">Por qué</span><p>En jiu-jitsu casi nunca haces un crunch, pero todo el tiempo estás aguantando que alguien te gire. Esto entrena exactamente eso.</p></div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="blk li">Cierre</div>
+    <div class="exs">
+      <div class="plain"><h4>Afloje opcional · 5 min</h4><p>Movimientos suaves de hombro y cadera para bajar revoluciones. No cuenta como la sesión de movilidad de la semana: esa va el domingo, completa y estructurada.</p></div>
+      <div class="plain"><h4>Jiu-jitsu · 2 horas</h4><p>En la noche. Si la clase se pone pesada, el jueves haz solo los primeros tres ejercicios y te vas. Cuenta como sesión completa.</p></div>
+    </div>
+  </div>
+</details>
+
+<!-- JUEVES -->
+<details class="day" data-d="jue">
+  <summary><span class="letter">J</span><span class="info"><span class="title">Jueves — Fuerza B</span><span class="meta">Cadera y press militar · 65 min</span></span><span class="arrow">▼</span></summary>
+  <div>
+    <div class="blk">Lo pesado</div>
+    <div class="exs">
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Peso muerto rumano en Smith</span><span class="ex-sets">3 × 4–6</span></div>
+        <div class="ex-sub"><span class="tag t-pri">Prioritario</span><span class="tag t-pes">Pesado</span><span class="ex-rest">Entre series <b>3 min</b> · al terminar <b>3 min</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo, cuándo subir y si no te sale</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>De pie con la barra a la altura de la cadera. Empuja la cadera hacia atrás y baja la barra rozando la pierna hasta que sientas el estirón atrás del muslo. Hasta dónde bajas depende de tu movilidad, no de una altura fija. La espalda nunca se redondea. Sube apretando el glúteo.</p></div>
+            <div class="bit"><span class="k">Las primeras dos semanas</span><p>Van en 3 × 6–8, y en la semana 1 solo 2 series. Desde la semana 3, 4–6.</p></div>
+            <div class="bit up"><span class="k">Cuándo subir de peso</span><p>Cuando saques 6 reps en las 3 series, le subes 10 lb. Aquí puedes meter la cuarta serie si la semana viene bien.</p></div>
+            <div class="bit no"><span class="k">Si no te sale</span><p>Si la espalda se empieza a redondear se acabó la serie, aunque te queden reps. Eso no se negocia: aquí es donde la gente se lastima.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Press militar en Smith</span><span class="ex-sets">3 × 4–6</span></div>
+        <div class="ex-sub"><span class="tag t-pes">Pesado</span><span class="ex-rest">Entre series <b>3 min</b> · al terminar <b>3 min</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo, cuándo subir y si no te sale</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Sentado con respaldo o de pie. La barra baja hasta la barbilla y sube hasta estirar los brazos. Panza apretada para no arquear la espalda baja: si te estás doblando hacia atrás, el peso está muy alto.</p></div>
+            <div class="bit up"><span class="k">Cuándo subir de peso</span><p>Cuando saques 6 en las 3 series, le subes 5 lb. Es el ejercicio con más margen de todo tu programa por lo lejos que estás del máximo de tu Smith: aquí vas a ver los saltos más grandes.</p></div>
+            <div class="bit no"><span class="k">Si no te sale</span><p>Seguros puestos antes de empezar. Si una rep se atora, la barra se queda ahí. No termines empujando con las piernas.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Jalón al pecho</span><span class="ex-sets">3 × 6–8</span></div>
+        <div class="ex-sub"><span class="tag t-pes">Pesado</span><span class="ex-rest">Entre series <b>2 min</b> · al terminar <b>2 min</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo, cuándo subir y si no te sale</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Agarre en V. Pecho arriba, jala hasta la clavícula pensando en llevar los codos a las costillas, no en jalar con los brazos. Sube despacio hasta estirar completo.</p></div>
+            <div class="bit up"><span class="k">Cuándo subir de peso</span><p>Cuando saques 8 en las 3 series, le subes 10 lb. Tu máquina de poleas aguanta muchísimo más de lo que has usado, así que aquí no vas a topar ni en este bloque ni en el que sigue.</p></div>
+            <div class="bit no"><span class="k">Si no te sale</span><p>Termina jalando solo hasta la mitad, sin echarte para atrás con el torso para ganar impulso.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Empuje de cadera en Smith</span><span class="ex-sets">2 × 6–8</span></div>
+        <div class="ex-sub"><span class="tag t-pes">Pesado</span><span class="ex-rest">Entre series <b>2 min</b> · al terminar <b>2 min</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo, cuándo subir y si no te sale</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Espalda apoyada a lo ancho del banco, la barra sobre la cadera con una toalla doblada abajo. Sube empujando con los talones hasta que el cuerpo quede como una mesa y aprieta el glúteo 2 segundos arriba.</p></div>
+            <div class="bit up"><span class="k">Cuándo subir de peso</span><p>Cuando saques 8 en las 2 series, le subes 10 o 20 lb según qué tan fácil salió la última. El glúteo aguanta saltos grandes, pero el salto lo decides tú por sensación, no por regla fija.</p></div>
+            <div class="bit no"><span class="k">Si no te sale</span><p>Acorta el recorrido y sube solo hasta donde puedas apretar. Media rep con glúteo apretado vale más que una completa empujando con la espalda baja.</p></div>
+          </div>
+        </details>
+      </div>
+
+    </div>
+
+    <div class="blk cy">Accesorios</div>
+    <div class="exs">
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Preacher curl con mancuerna, un brazo</span><span class="ex-sets">2 × 8–12 c/brazo</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Alternas brazos · sin descanso extra</span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo, cuándo subir y si no te sale</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Brazo apoyado sobre el respaldo del banco inclinado, axila pegada al borde. Estiras completo abajo y subes sin despegar el codo. La bajada se controla contando 2 o 3 segundos. Mientras trabaja un brazo, el otro descansa: no necesitas pausa aparte.</p></div>
+            <div class="bit up"><span class="k">Cuándo subir de peso</span><p>Cuando saques 12 en las 2 series de cada brazo dejando una rep, le subes 5 lb. Es el único unilateral del programa y está aquí porque históricamente te ha funcionado y cuesta poca fatiga.</p></div>
+            <div class="bit no"><span class="k">Si no te sale</span><p>Termina bajando el peso lo más lento posible. Si el codo se despega del respaldo para ayudarte, se acabó la serie.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Crunch en polea arrodillado</span><span class="ex-sets">3 × 8–12</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Entre series <b>90 seg</b> · fin de la sesión</span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo, cuándo subir y si no te sale</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>De rodillas frente a la polea alta, cuerda o barra detrás de la nuca. Bajas llevando las costillas hacia la pelvis, redondeando la espalda alta. No es una reverencia con la cadera: la cadera se queda quieta y lo que se dobla es el abdomen.</p></div>
+            <div class="bit up"><span class="k">Cuándo subir de peso</span><p>Cuando saques 12 en las 3 series, le subes 10 lb. Este y la elevación de piernas son los dos que sí construyen el recto abdominal, y con esas seis series semanales es suficiente: lo que tapa el abdomen es la grasa de encima, no la falta de músculo.</p></div>
+            <div class="bit no"><span class="k">Si no te sale</span><p>Reduce el recorrido antes que el peso. Media rep bien redondeada vale más que una completa jalando con la cadera.</p></div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <div class="blk li">Después</div>
+    <div class="exs">
+      <div class="plain"><h4>Trote suave · 15 min · opcional</h4><p>El otro día donde correr sí rifa. Ritmo de plática.</p></div>
+    </div>
+  </div>
+</details>
+
+<!-- VIERNES -->
+<details class="day" data-d="vie">
+  <summary><span class="letter">V</span><span class="info"><span class="title">Viernes — Descarga</span><span class="meta">Alberca suave y caminata · cero pesas</span></span><span class="arrow">▼</span></summary>
+  <div>
+    <div class="note"><p><b>Hoy no se levanta nada.</b> Este día existe para que el sábado puedas mover peso y el lunes llegues entero al tatami. Si lo conviertes en sesión, el que paga es el sábado.</p></div>
+
+    <div class="blk cy">Alberca · 30–40 min</div>
+    <div class="exs">
+      <div class="plain"><p>Solo traje y goggles, no necesitas nada más. Un largo es de un extremo de tu alberca al otro. Todo va suave: si terminas reventado, ibas muy fuerte.</p></div>
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Calentar</span><span class="ex-sets">4 largos</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Suave · <b>30 seg</b> entre largos</span></div>
+      </div>
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Solo pierna</span><span class="ex-sets">4 largos</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Suave · <b>30 seg</b> entre largos</span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo se hace</span></summary>
+          <div class="dd-body"><div class="bit"><span class="k">Cómo se hace</span><p>Brazos estirados al frente, cabeza metida entre los brazos, y avanzas solo pataleando. La patada sale de la cadera con la pierna casi recta, no de doblar la rodilla. Sacas la cabeza a respirar cuando lo necesites.</p></div></div>
+        </details>
+      </div>
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Solo brazo</span><span class="ex-sets">4 largos</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Suave · <b>30 seg</b> entre largos</span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo se hace</span></summary>
+          <div class="dd-body"><div class="bit"><span class="k">Cómo se hace</span><p>Piernas juntas y quietas, avanzas solo con la brazada. Te vas a sentir lento y pesado, y eso es justo lo que te enseña: la brazada estaba floja y la patada lo tapaba.</p></div></div>
+        </details>
+      </div>
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Bloque principal</span><span class="ex-sets">8 × 2 largos</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Entre series <b>45 seg</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Ritmo y cómo progresa</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Ritmo</span><p>Deberías poder decir una frase completa al llegar al borde. Esto es recuperación, no otra sesión.</p></div>
+            <div class="bit up"><span class="k">Cuándo progresas</span><p>Cada dos semanas, una de dos: le quitas 5 segundos al descanso o le sumas 2 series. Nunca las dos a la vez.</p></div>
+          </div>
+        </details>
+      </div>
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Aflojar</span><span class="ex-sets">4 largos</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Lo más lento que puedas · sin parar</span></div>
+      </div>
+    </div>
+
+    <div class="blk li">Cuando sea</div>
+    <div class="exs">
+      <div class="plain"><h4>Caminata · 30–45 min</h4><p>Cuando te acomode. No tiene que sentirse como sesión.</p></div>
+    </div>
+  </div>
+</details>
+
+<!-- SÁBADO -->
+<details class="day" data-d="sab">
+  <summary><span class="letter">S</span><span class="info"><span class="title">Sábado — Fuerza C</span><span class="meta">Volumen y acarreos · 65 min</span></span><span class="arrow">▼</span></summary>
+  <div>
+    <div class="note cy"><p><b>Si el sábado se cae porque trabajaste, no fallaste.</b> Es la sesión con más riesgo de que te la coman, y por eso Cindy es su comodín oficial: mira la pestaña de comodines.</p></div>
+
+    <div class="blk">Series largas</div>
+    <div class="exs">
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Press de banca en Smith</span><span class="ex-sets">3 × 6–8</span></div>
+        <div class="ex-sub"><span class="tag t-pri">Prioritario</span><span class="tag t-pes">Pesado</span><span class="ex-rest">Entre series <b>2.5 min</b> · al terminar <b>2.5 min</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Por qué otra vez y cuándo subir</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Por qué otra vez banca</span><p>Segunda exposición semanal al mismo patrón, con más reps y menos peso que el martes. Pegarle dos veces por semana es lo que lo hace subir. Sigue siendo pesado para este rango: pesado no significa el máximo del martes.</p></div>
+            <div class="bit up"><span class="k">Cuándo subir de peso</span><p>Cuando saques 8 en las 3 series, le subes 5 lb. Aquí puedes meter la cuarta serie si la semana viene bien.</p></div>
+            <div class="bit no"><span class="k">Si no te sale</span><p>Seguros puestos. La barra se queda ahí y ya.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Sentadilla en Smith</span><span class="ex-sets">3 × 6–8</span></div>
+        <div class="ex-sub"><span class="tag t-pes">Pesado</span><span class="ex-rest">Entre series <b>2.5 min</b> · al terminar <b>2.5 min</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo y cuándo subir</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Igual que el martes, en rango más largo. Sube con intención de ir rápido.</p></div>
+            <div class="bit up"><span class="k">Cuándo subir de peso</span><p>Cuando saques 8 en las 3 series, le subes 10 lb.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Remo sentado en polea</span><span class="ex-sets">3 × 6–8</span></div>
+        <div class="ex-sub"><span class="tag t-pes">Pesado</span><span class="ex-rest">Entre series <b>2 min</b> · al terminar <b>2 min</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo y cuándo subir</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Pecho arriba, jala al ombligo, aprieta los omóplatos al final y sostén un segundo. No te vayas para atrás con el torso.</p></div>
+            <div class="bit up"><span class="k">Cuándo subir de peso</span><p>Cuando saques 8 en las 3 series, le subes 10 lb.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Press inclinado con mancuernas</span><span class="ex-sets">2 × 8–12</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Entre series <b>90 seg</b> · al terminar <b>90 seg</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo progresa cuando la mancuerna ya topó</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Banco inclinado, bajas hasta sentir el estirón en el pecho sin forzar el hombro. Deja una o dos reps de sobra: aquí ya no vamos al fallo.</p></div>
+            <div class="bit up"><span class="k">Cuándo progresas</span><p>Ya estás en la mancuerna más pesada que tienes, así que la progresión no es por peso. En orden: pausa de un segundo abajo, después bajada de tres segundos, después más inclinación del respaldo, y al final lagartija con pies elevados o con mochila.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Máquina de aductores</span><span class="ex-sets">2 × 10–15</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Entre series <b>60 seg</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Por qué entra</span></summary>
+          <div class="dd-body"><div class="bit"><span class="k">Por qué entra</span><p>Es la de cerrar las piernas. Aductores fuertes son guardia cerrada que el otro no te abre. Es la máquina más útil que tienes para jiu-jitsu y no la estabas usando.</p></div></div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Acarreo con una mancuerna</span><span class="ex-sets">3 × 30–45 s c/lado</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Entre series <b>60 seg</b></span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo se hace y para qué</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Una sola mancuerna, la más pesada que tengas, en una mano. Caminas manteniendo los hombros nivelados y sin inclinarte hacia el otro lado. El trabajo es el costado que no carga.</p></div>
+            <div class="bit"><span class="k">Para qué</span><p>Agarre, tronco y antirrotación cargada al mismo tiempo, caminando. De lo más transferible que hay a levantar y controlar a otra persona.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Jalón a la cara en polea</span><span class="ex-sets">2 × 12–15</span></div>
+        <div class="ex-sub"><span class="tag t-mod">Moderado</span><span class="ex-rest">Entre series <b>60 seg</b> · fin de la sesión</span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo y por qué no se salta</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Cuerda a la altura de la cara. Jala separando las manos hacia las orejas, con los codos altos.</p></div>
+            <div class="bit"><span class="k">Por qué no se salta</span><p>Es salud de hombro, y por eso va moderado: mucho peso aquí lo vuelve inútil. Con el volumen de lagartijas, parada de manos y jiu-jitsu que traes, el hombro necesita este contrapeso.</p></div>
+          </div>
+        </details>
+      </div>
+
+    </div>
+
+    <div class="blk li">Opcional</div>
+    <div class="exs">
+      <div class="plain"><h4>Alberca · 20–30 min</h4><p>Si te queda cuerpo y ganas. Siempre después del fierro, nunca antes.</p></div>
+      <div class="plain"><h4>Caminata · 45 min</h4><p>Cuando sea. Puede ser un mandado o salir con tu esposa.</p></div>
+    </div>
+  </div>
+</details>
+
+<!-- DOMINGO -->
+<details class="day" data-d="dom">
+  <summary><span class="letter">D</span><span class="info"><span class="title">Domingo — Descarga</span><span class="meta">Caminata 45 min · movilidad 10–15 min</span></span><span class="arrow">▼</span></summary>
+  <div>
+    <div class="exs">
+      <div class="plain"><h4>Caminata · 45 min</h4><p>Tranquilo. Junto con el viernes, es lo que hace que la semana siguiente sirva.</p></div>
+    </div>
+
+    <div class="note cy"><p><b>Movilidad · 10–15 min.</b> Esta es la sesión estructurada de la semana, en el orden escrito: cadera abajo, espalda alta y hombro al final. Todo va sin dolor. Tensión controlada sí, dolor no, y nada de rebotes.</p></div>
+
+    <div class="blk cy">La sesión</div>
+    <div class="exs">
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Cambios de cadera 90/90</span><span class="ex-sets">8 c/lado</span></div>
+        <div class="ex-sub"><span class="ex-rest">Rotación de cadera · lento, sin aventar</span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo se hace, qué sientes y cómo progresa</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Sentado en el piso, una pierna al frente doblada a 90 grados y la otra al costado también a 90. Gira las dos rodillas hacia el otro lado hasta invertir la posición: eso es un cambio. Pecho arriba y movimiento lento, sin usar el impulso.</p></div>
+            <div class="bit"><span class="k">Qué se siente</span><p>Tensión adentro del muslo de la pierna de adelante y por fuera de la cadera de atrás. Si te pincha al frente de la cadera, abre más el ángulo de las piernas hasta que el pinchazo desaparezca.</p></div>
+            <div class="bit up"><span class="k">Cómo progresa</span><p>Semanas 1–2 apóyate con las manos en el piso. Semanas 3–4 sin manos. Semanas 5–8 aguanta 5 segundos al llegar a cada lado antes de cambiar.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Aductores hacia atrás en cuatro apoyos</span><span class="ex-sets">8 c/lado</span></div>
+        <div class="ex-sub"><span class="ex-rest">Aductores · espalda plana todo el tiempo</span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo se hace, qué sientes y cómo progresa</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>En cuatro puntos, estira una pierna hacia el costado con la rodilla recta y el pie apoyado en el piso. Empuja la cadera hacia atrás, hacia el talón de la pierna que sigue doblada, y regresa. La espalda se queda plana: si se redondea, ya no estás moviendo la cadera.</p></div>
+            <div class="bit"><span class="k">Qué se siente</span><p>Un jalón claro adentro del muslo de la pierna estirada. Nada en la rodilla.</p></div>
+            <div class="bit up"><span class="k">Cómo progresa</span><p>Cada semana llegas un poco más atrás con la cadera. Semanas 5–8 aguanta 5 segundos en el punto más lejano de cada repetición.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Estiramiento del flexor de cadera</span><span class="ex-sets">40–60 s c/lado</span></div>
+        <div class="ex-sub"><span class="ex-rest">El más importante para ti</span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo se hace, qué sientes y cómo progresa</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>De rodillas con un pie al frente, como cuando pides matrimonio. Mete la pelvis hacia adentro apretando el glúteo de la pierna de atrás, y solo entonces avanza un poco el peso hacia adelante. La espalda no se arquea: si se arquea, el estirón se te fue a la espalda baja y ya no estás estirando nada.</p></div>
+            <div class="bit"><span class="k">Qué se siente</span><p>Jalón al frente de la cadera y del muslo de la pierna de atrás.</p></div>
+            <div class="bit"><span class="k">Por qué es el que más te importa</span><p>Nueve horas sentado y luego dos de tatami. El flexor de cadera corto es lo que te va a limitar la profundidad de la sentadilla y la extensión de cadera arriba del peso muerto rumano.</p></div>
+            <div class="bit up"><span class="k">Cómo progresa</span><p>Semanas 3–4 sube el pie de atrás a un cojín. Semanas 5–8 apóyalo contra el sillón o la pared, y sostén los 60 segundos completos.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Sentadilla profunda sostenida</span><span class="ex-sets">45–60 s</span></div>
+        <div class="ex-sub"><span class="ex-rest">Tobillo, cadera y aductores</span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo se hace, qué sientes y cómo progresa</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Pies al ancho de hombros, bajas hasta el fondo y te quedas ahí. Codos por dentro de las rodillas empujándolas hacia afuera, pecho arriba, talones pegados al piso.</p></div>
+            <div class="bit"><span class="k">Si se te levantan los talones</span><p>Ponles un libro o un disco debajo. Cada dos semanas usa uno más delgado hasta que ya no lo necesites. Que se levanten no es falta de fuerza, es tobillo.</p></div>
+            <div class="bit"><span class="k">Qué se siente</span><p>Tobillos, aductores y cadera. Molestia en la rodilla no: si aparece, abre más los pies o baja menos.</p></div>
+            <div class="bit up"><span class="k">Cómo progresa</span><p>Semanas 5–8 suelta las manos y aguanta el minuto sin apoyarte en nada.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Rotación torácica acostado</span><span class="ex-sets">6–8 c/lado</span></div>
+        <div class="ex-sub"><span class="ex-rest">Espalda alta · las rodillas no se mueven</span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo se hace, qué sientes y cómo progresa</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>Acostado de lado, rodillas dobladas a 90 grados y apiladas una sobre otra, brazos estirados al frente con las palmas juntas. Abre el brazo de arriba llevándolo hacia el otro lado como si abrieras un libro, siguiendo la mano con la mirada. Las rodillas se quedan pegadas al piso y quietas.</p></div>
+            <div class="bit"><span class="k">Qué se siente</span><p>El giro en la espalda alta y un estirón en el pecho. La espalda baja no debería moverse: si las rodillas se despegan, estás haciendo trampa desde la lumbar.</p></div>
+            <div class="bit up"><span class="k">Cómo progresa</span><p>Semanas 5–8 aguanta 5 segundos abajo en cada repetición antes de regresar.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Deslizamientos de brazos en pared</span><span class="ex-sets">8–10</span></div>
+        <div class="ex-sub"><span class="ex-rest">Hombro · nada se despega de la pared</span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Cómo se hace, qué sientes y cómo progresa</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Cómo se hace</span><p>De espaldas a la pared, con la espalda baja pegada. Antebrazos y dorso de las manos contra la pared, codos a la altura de las costillas. Sube los brazos deslizándolos por la pared sin despegar manos, codos ni espalda, y regresa.</p></div>
+            <div class="bit"><span class="k">Qué se siente</span><p>Trabajo entre los omóplatos y en la parte de atrás del hombro. En cuanto la espalda baja se despegue de la pared, ahí se acabó el recorrido bueno.</p></div>
+            <div class="bit"><span class="k">Por qué entra</span><p>Con parada de manos, press militar y todas las lagartijas que traes, el hombro necesita este trabajo de recorrido completo hacia arriba.</p></div>
+            <div class="bit up"><span class="k">Cómo progresa</span><p>Llegar más arriba sin despegar nada. Ese es todo el objetivo.</p></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="ex">
+        <div class="ex-top"><span class="ex-name">Estiramiento libre</span><span class="ex-sets">60 s</span></div>
+        <div class="ex-sub"><span class="ex-rest">Solo lo que te dejó cargado el jiu-jitsu</span></div>
+        <details class="dd"><summary><span class="arrow">▼</span><span class="lbl">Qué estirar según lo que traigas</span></summary>
+          <div class="dd-body">
+            <div class="bit"><span class="k">Qué suele quedar cargado</span><p>Después de dos clases de dos horas, lo más común son dorsales, cuello y aductores. Los dorsales se estiran colgándote de la barra con los brazos estirados y dejando caer el peso 30 segundos. El cuello, solo movimientos suaves llevando la oreja al hombro: nada de jalones ni de puentes.</p></div>
+            <div class="bit"><span class="k">Si no traes nada cargado</span><p>Te saltas este y ya. No hay que llenar el espacio por llenarlo.</p></div>
+          </div>
+        </details>
+      </div>
+
+    </div>
+
+    <div class="blk li">Cómo progresa el bloque</div>
+    <div class="exs">
+      <div class="plain"><h4>Las ocho semanas</h4><p>Semanas 1 y 2: aprender las posiciones en rango cómodo, sin buscar el máximo. Semanas 3 y 4: los mismos movimientos más lentos y con menos apoyo de manos. Semanas 5 a 8: un poco más de rango, o aguantar 5 segundos al final de cada repetición. Nunca progresas entrando en dolor.</p></div>
+      <div class="plain"><h4>Si un lado está más limitado</h4><p>Empieza siempre por el lado apretado y hazle una serie extra. Lo que no se hace es forzar rango de ese lado para alcanzar al otro: la diferencia se cierra por repetición, no por presión. Si a las cuatro semanas la diferencia sigue igual o hay dolor, eso ya es de fisioterapeuta, no de este documento.</p></div>
+      <div class="plain"><h4>Lo que esto no arregla</h4><p>Diez minutos el domingo no compensan una cadera que pasa nueve horas sentada. Lo que más mueve la aguja es pararte y caminar un poco cada hora entre semana. Esta sesión mantiene, no rescata.</p></div>
+    </div>
+  </div>
+</details>
+
 </div>
+</section>
 
-<!-- ── FASE 1 · SEM 1–3 ── -->
-<div class="tab" id="fase1">
-  <div class="sec-head">
-    <div class="sec-num">01</div>
-    <div class="sec-info">
-      <div class="sec-title">Fase 1</div>
-      <div class="sec-sub">Semanas 1–3 · Reactivación · Cargas altas desde el día 1 · Sem 3 = descarga</div>
-    </div>
-  </div>
-  <div class="callout">
-    <p>Arranca fuerte. Bench ~<strong>85–90 kg</strong> de trabajo desde la semana 1. Squat Smith ~<strong>80 kg</strong>. Pull-ups con volumen real — 5 series al máximo, anotar reps por serie. En 2 semanas el SNC está online y los pesos empiezan a subir solos.</p>
-  </div>
+<!-- ══════ COMODINES ══════ -->
+<section class="view" data-view="comodin">
+<div class="wrap">
+  <div class="sec">
+    <h2 class="anton">Comodines</h2>
+    <p class="lead">Existen para sustituir una sesión, nunca para sumarse encima. La fuerza corporal y seguir moviéndote bajo fatiga también son objetivos reales; lo que dejaron de ser es una deuda semanal de recuperación.</p>
 
-  <!-- LUNES -->
-  <div class="day" onclick="toggleDay(this)">
-    <div class="day-head">
-      <div class="day-num">L</div>
-      <div class="day-info">
-        <div class="day-name">Lunes — Empuje</div>
-        <div class="day-tag tag-push">Pecho · Hombro · Tríceps · 65–70 min</div>
-      </div>
-      <div class="day-arr">▼</div>
+    <div class="card o">
+      <h3>Las cuatro reglas</h3>
+      <p>Máximo uno por semana. Nunca encima de una sesión completa. Si ese día también hay jiu-jitsu, se limita a 10 minutos y sin llegar al fallo. El formato completo de 20 minutos solo va en un día sin jiu-jitsu y sin pesas pesadas en las 24 horas siguientes.</p>
     </div>
-    <div class="day-body">
-      <div class="blk-label">Big lifts — Smith Machine</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><div class="t-name">Bench Press</div><div class="t-note">~85–90 kg · barra toca el pecho · codos a 75°</div></td>
-            <td><div class="t-reps">4 × 8</div></td>
-            <td><span class="b b-smith">Smith</span></td>
-            <td class="t-clave">Tempo 3-1-2 · +2.5 kg si completas todo</td>
-          </tr>
-          <tr>
-            <td><div class="t-name">Overhead Press</div><div class="t-note">~55–65 kg · sentado · barra baja a la barbilla</div></td>
-            <td><div class="t-reps">4 × 8–10</div></td>
-            <td><span class="b b-smith">Smith</span></td>
-            <td class="t-clave">Core apretado · no arquear lumbar</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="blk-label blue">Accesorios</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Press inclinado con mancuernas</div><div class="t-note">30–45° · 30 lbs</div></td><td><div class="t-reps">3 × 10</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Tempo 3-1-2</td></tr>
-          <tr><td><div class="t-name">Elevaciones laterales</div></td><td><div class="t-reps">4 × 15</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">Pausa 1 seg arriba</td></tr>
-          <tr><td><div class="t-name">Flyes en cable (cruce)</div><div class="t-note">Poleas altas</div></td><td><div class="t-reps">3 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">No bloquear codos</td></tr>
-          <tr><td><div class="t-name">Extensión de tríceps en cable (cuerda)</div></td><td><div class="t-reps">3 × 15</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">Separa la cuerda al final</td></tr>
-          <tr><td><div class="t-name">Dips en banco</div></td><td><div class="t-reps">3 × máx</div></td><td><span class="b b-bw">Corporal</span></td><td class="t-clave"></td></tr>
-        </tbody>
-      </table>
-      <div class="callout"><p><strong>Finisher:</strong> 10 min cardio estado estable al 65% FC máx.</p></div>
+
+    <div class="card c">
+      <h3>Cuándo se usan</h3>
+      <p><b>Emergencia:</b> no hay gym, estás viajando o no hay equipo. Sustituye completa la sesión de ese día.</p>
+      <p><b>Programado:</b> una vez cada tres o cuatro semanas puede sustituir Fuerza C para conservar y medir la fuerza-resistencia.</p>
+      <p><b>Prueba:</b> una vez al arrancar el bloque y otra al terminarlo, siempre sustituyendo, para saber si ganaste fuerza máxima sin perder capacidad de trabajo.</p>
+    </div>
+
+    <div class="card">
+      <h3>Si tienes gym pero poco tiempo</h3>
+      <p>Esto no es comodín: haces los tres primeros ejercicios pesados del día y te vas. Conserva mucho mejor el estímulo de fuerza que cambiar la sesión por un circuito.</p>
     </div>
   </div>
 
-  <!-- MARTES -->
-  <div class="day" onclick="toggleDay(this)">
-    <div class="day-head">
-      <div class="day-num">M</div>
-      <div class="day-info">
-        <div class="day-name">Martes — Jalón</div>
-        <div class="day-tag tag-pull">Espalda · Bíceps · 65–70 min</div>
-      </div>
-      <div class="day-arr">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="blk-label">Big lift — Pull-ups</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><div class="t-name">Pull-ups — Agarre prono ancho</div><div class="t-note">Rango completo · pausa 1 seg arriba · sin balancear</div></td>
-            <td><div class="t-reps">5 × máx</div></td>
-            <td><span class="b b-bw">Corporal</span></td>
-            <td class="t-clave">Anota reps por serie — referencia para agregar peso en Fase 2</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="blk-label blue">Accesorios</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Lat Pulldown agarre neutro (V)</div></td><td><div class="t-reps">4 × 10</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Pecho arriba · no jalar con brazos</td></tr>
-          <tr><td><div class="t-name">Remo en cable sentado (V)</div></td><td><div class="t-reps">4 × 10</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Aprieta escápulas al final</td></tr>
-          <tr><td><div class="t-name">Remo Smith inclinado</div><div class="t-note">Espalda 45° · tira al ombligo</div></td><td><div class="t-reps">3 × 10</div></td><td><span class="b b-smith">Smith</span></td><td class="t-clave">Carga real desde el inicio</td></tr>
-          <tr><td><div class="t-name">Remo con mancuerna un brazo</div><div class="t-note">30 lbs · apoyado en banco</div></td><td><div class="t-reps">3 × 10 c/lado</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Rango completo · no rotar cadera</td></tr>
-          <tr><td><div class="t-name">Curl bíceps con mancuernas</div></td><td><div class="t-reps">3 × 10</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">Supinación completa</td></tr>
-          <tr><td><div class="t-name">Curl martillo</div></td><td><div class="t-reps">3 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Face pulls en cable</div><div class="t-note">Cuerda a altura de cara · rotación externa</div></td><td><div class="t-reps">3 × 20</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">No omitir — salud del hombro</td></tr>
-        </tbody>
-      </table>
+  <div class="sec">
+    <h2 class="anton">Cindy</h2>
+    <p class="lead">El comodín preferido para sustituir Fuerza C, porque trae jalón, empuje y pierna.</p>
+    <div class="card">
+      <h3>Cómo se hace</h3>
+      <p>20 minutos en el cronómetro. Vueltas de 3 dominadas, 10 lagartijas y 15 sentadillas, una tras otra, tantas como puedas. Descansas cuando lo necesites pero el reloj no se detiene. Anotas las vueltas: ese es tu número a batir.</p>
+      <p>Ve parejo desde el arranque. El error clásico es salir volando los primeros 5 minutos y morirte en el 12.</p>
+      <p>Sube a 5 dominadas por vuelta cuando saques 12 seguidas en un solo intento.</p>
     </div>
   </div>
 
-  <!-- MIÉRCOLES -->
-  <div class="day" onclick="toggleDay(this)">
-    <div class="day-head">
-      <div class="day-num">X</div>
-      <div class="day-info">
-        <div class="day-name">Miércoles — HIIT + Core</div>
-        <div class="day-tag tag-hiit">Alta intensidad · 45 min</div>
-      </div>
-      <div class="day-arr">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="blk-label">Circuito HIIT — 4 rondas · 45 seg descanso entre rondas</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Duración / Reps</th><th>Nota</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Sentadilla con peso corporal</div></td><td><div class="t-reps">40 seg</div></td><td class="t-clave">Explosivo al subir</td></tr>
-          <tr><td><div class="t-name">Mountain climbers</div></td><td><div class="t-reps">30 seg</div></td><td class="t-clave">Core apretado</td></tr>
-          <tr><td><div class="t-name">Swing con mancuerna (estilo kettlebell)</div><div class="t-note">30 lbs</div></td><td><div class="t-reps">20 reps</div></td><td class="t-clave">Impulso de cadera, no brazos</td></tr>
-          <tr><td><div class="t-name">Burpees</div></td><td><div class="t-reps">12 reps</div></td><td class="t-clave">Sin parar</td></tr>
-          <tr><td><div class="t-name">Jumping jacks</div></td><td><div class="t-reps">30 seg</div></td><td class="t-clave">Recuperación activa</td></tr>
-        </tbody>
-      </table>
-      <div class="blk-label green">Core — 3 rondas</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Nota</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Plancha isométrica</div></td><td><div class="t-reps">3 × 45 seg</div></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Crunch en cable (polea alta)</div><div class="t-note">Rodillas en suelo</div></td><td><div class="t-reps">3 × 20</div></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Elevación de piernas colgado</div><div class="t-note">Barra de pull-ups</div></td><td><div class="t-reps">3 × 15</div></td><td class="t-clave">Sin balancear</td></tr>
-          <tr><td><div class="t-name">Plancha lateral</div></td><td><div class="t-reps">3 × 35 seg/lado</div></td><td class="t-clave"></td></tr>
-        </tbody>
-      </table>
+  <div class="sec">
+    <h2 class="anton">Nickels &amp; Dimes</h2>
+    <p class="lead">Comodín y prueba de fuerza-resistencia del tren superior.</p>
+    <div class="card">
+      <h3>Cómo se hace</h3>
+      <p>En el segundo cero de cada minuto haces 3 dominadas y 10 lagartijas, y descansas lo que sobre de ese minuto. Al minuto siguiente vuelves a empezar. Veinte rondas.</p>
+      <p>Los primeros 8 minutos se sienten fáciles y ahí está la trampa. Si dejas de alcanzar dentro del minuto, bajas a 2 dominadas y sigues: terminar los 20 vale más que las reps exactas.</p>
     </div>
   </div>
 
-  <!-- JUEVES -->
-  <div class="day" onclick="toggleDay(this)">
-    <div class="day-head">
-      <div class="day-num">J</div>
-      <div class="day-info">
-        <div class="day-name">Jueves — Piernas</div>
-        <div class="day-tag tag-legs">Cuádriceps · Isquios · Glúteos · 70 min</div>
-      </div>
-      <div class="day-arr">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="blk-label">Big lifts — Smith Machine</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><div class="t-name">Squat</div><div class="t-note">~80 kg · pies ligeramente adelantados · profundidad completa</div></td>
-            <td><div class="t-reps">4 × 8–10</div></td>
-            <td><span class="b b-smith">Smith</span></td>
-            <td class="t-clave">Tempo 3-1-2 · +2.5 kg cada semana</td>
-          </tr>
-          <tr>
-            <td><div class="t-name">Hip Thrust</div><div class="t-note">~90 kg · espalda en banco · toalla bajo la barra</div></td>
-            <td><div class="t-reps">4 × 10</div></td>
-            <td><span class="b b-smith">Smith</span></td>
-            <td class="t-clave">Glúteo apretado 2 seg arriba</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="blk-label blue">Accesorios</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Prensa de pierna</div></td><td><div class="t-reps">4 × 12</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Peso real · no conservador</td></tr>
-          <tr><td><div class="t-name">Zancadas búlgaras con mancuernas</div><div class="t-note">Pie trasero elevado · 30 lbs c/mano</div></td><td><div class="t-reps">3 × 10 c/pierna</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">El movimiento más brutal del día</td></tr>
-          <tr><td><div class="t-name">Extensión de cuádriceps en máquina</div></td><td><div class="t-reps">3 × 15</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">Pausa 1 seg arriba</td></tr>
-          <tr><td><div class="t-name">Curl femoral en máquina</div></td><td><div class="t-reps">3 × 15</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Elevación de talones de pie</div><div class="t-note">Con mancuerna</div></td><td><div class="t-reps">4 × 20</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">Pausa 2 seg arriba</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- VIERNES -->
-  <div class="day" onclick="toggleDay(this)">
-    <div class="day-head">
-      <div class="day-num">V</div>
-      <div class="day-info">
-        <div class="day-name">Viernes — Full Body + Cardio</div>
-        <div class="day-tag tag-full">Compuestos · Cardio estado estable · 70 min</div>
-      </div>
-      <div class="day-arr">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="blk-label">Full Body — Compuestos principales</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Chin-ups (agarre supino)</div><div class="t-note">Palmas hacia ti · varía agarre respecto al martes</div></td><td><div class="t-reps">4 × máx</div></td><td><span class="b b-bw">Corporal</span></td><td class="t-clave">Rango completo</td></tr>
-          <tr><td><div class="t-name">Bench Press Smith — volumen</div><div class="t-note">70% del peso del lunes</div></td><td><div class="t-reps">3 × 15</div></td><td><span class="b b-smith">Smith</span></td><td class="t-clave">Más reps, menos peso</td></tr>
-          <tr><td><div class="t-name">Romanian Deadlift con mancuernas</div><div class="t-note">Bisagra de cadera · espalda neutra · 30 lbs</div></td><td><div class="t-reps">4 × 12</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Empuja cadera atrás · no dobles rodillas</td></tr>
-          <tr><td><div class="t-name">Remo en cable con cuerda</div></td><td><div class="t-reps">3 × 12</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Press Arnold con mancuernas</div></td><td><div class="t-reps">3 × 12</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Zancadas caminando con mancuernas</div><div class="t-note">30 lbs</div></td><td><div class="t-reps">3 × 12 c/pierna</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave"></td></tr>
-        </tbody>
-      </table>
-      <div class="callout green"><p><strong>Cardio estado estable — 20–25 min al 65–70% FC máx.</strong> Post-pesas el cuerpo quema grasa preferentemente. El viernes es el día de mayor oxidación de grasa de toda la semana.</p></div>
-    </div>
-  </div>
-
-  <div class="rest-block"><p>Sábado / Domingo — Descanso activo</p><span>Caminata 30–45 min · Movilidad · Stretching · Sin pesas</span></div>
-  <div class="callout" style="margin-top:1rem"><p><strong>Semana 3 — Descarga:</strong> Mismos pesos, 40% menos series. El SNC consolida las ganancias de fuerza antes de la Fase 2.</p></div>
-</div>
-
-<!-- ── FASE 2 · SEM 4–7 ── -->
-<div class="tab" id="fase2">
-  <div class="sec-head">
-    <div class="sec-num">02</div>
-    <div class="sec-info">
-      <div class="sec-title">Fase 2</div>
-      <div class="sec-sub">Semanas 4–7 · Carga máxima · Drop sets · Superseries · Sem 7 = descarga</div>
-    </div>
-  </div>
-  <div class="callout">
-    <p>El músculo está reactivado. Ahora se sube el peso en Smith semana a semana y entran las técnicas de intensidad. <strong>Drop set obligatorio</strong> en la última serie de cada big lift. Las superseries del viernes duplican la densidad y la quema calórica por sesión.</p>
-  </div>
-
-  <!-- LUNES -->
-  <div class="day" onclick="toggleDay(this)">
-    <div class="day-head">
-      <div class="day-num">L</div>
-      <div class="day-info">
-        <div class="day-name">Lunes — Empuje</div>
-        <div class="day-tag tag-push">Pecho · Hombro · Tríceps · 70–75 min</div>
-      </div>
-      <div class="day-arr">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="blk-label">Big lifts — Smith Machine · Carga aumentada</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><div class="t-name">Bench Press</div><div class="t-note">Peso final Fase 1 + 5 kg · ~95–100 kg</div></td>
-            <td><div class="t-reps">5 × 6–8</div></td>
-            <td><span class="b b-smith">Smith</span></td>
-            <td class="t-clave">Última serie: drop set −10 kg hasta el fallo</td>
-          </tr>
-          <tr>
-            <td><div class="t-name">Overhead Press</div><div class="t-note">~65–70 kg</div></td>
-            <td><div class="t-reps">4 × 8</div></td>
-            <td><span class="b b-smith">Smith</span></td>
-            <td class="t-clave">Última serie: drop set</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="blk-label blue">Accesorios — Tempo 4-1-2</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Press inclinado con mancuernas</div></td><td><div class="t-reps">4 × 10</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Tempo 4-1-2</td></tr>
-          <tr><td><div class="t-name">Elevaciones laterales</div></td><td><div class="t-reps">5 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">Pausa 2 seg arriba</td></tr>
-          <tr><td><div class="t-name">Flyes en cable</div></td><td><div class="t-reps">4 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Kickback de tríceps con mancuerna</div></td><td><div class="t-reps">3 × 15</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Extensión de tríceps en cable</div></td><td><div class="t-reps">4 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
-        </tbody>
-      </table>
-      <div class="callout"><p><strong>Finisher:</strong> 15 min cardio estado estable al 65% FC máx.</p></div>
-    </div>
-  </div>
-
-  <!-- MARTES -->
-  <div class="day" onclick="toggleDay(this)">
-    <div class="day-head">
-      <div class="day-num">M</div>
-      <div class="day-info">
-        <div class="day-name">Martes — Jalón</div>
-        <div class="day-tag tag-pull">Espalda · Bíceps · 70–75 min</div>
-      </div>
-      <div class="day-arr">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="blk-label">Big lift — Pull-ups con peso añadido</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><div class="t-name">Pull-ups con mancuerna entre pies</div><div class="t-note">Peso que permita 6–8 reps limpias · sube cada semana que completes todo</div></td>
-            <td><div class="t-reps">5 × 6–8</div></td>
-            <td><span class="b b-bw">Corporal</span></td>
-            <td class="t-clave">Rango completo · sin balancear</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="blk-label blue">Accesorios</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Lat Pulldown neutro (V)</div></td><td><div class="t-reps">4 × 10</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Tempo 4-1-2</td></tr>
-          <tr><td><div class="t-name">Remo en cable sentado</div></td><td><div class="t-reps">5 × 10</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Última serie: drop set</td></tr>
-          <tr><td><div class="t-name">Remo Smith inclinado</div></td><td><div class="t-reps">4 × 10</div></td><td><span class="b b-smith">Smith</span></td><td class="t-clave">Carga aumentada vs Fase 1</td></tr>
-          <tr><td><div class="t-name">Pull-over con mancuerna en banco</div><div class="t-note">Dorsal en estiramiento</div></td><td><div class="t-reps">3 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Curl bíceps con mancuernas</div></td><td><div class="t-reps">4 × 10</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Curl concentrado</div></td><td><div class="t-reps">3 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Face pulls en cable</div></td><td><div class="t-reps">4 × 20</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">No omitir</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- MIÉRCOLES -->
-  <div class="day" onclick="toggleDay(this)">
-    <div class="day-head">
-      <div class="day-num">X</div>
-      <div class="day-info">
-        <div class="day-name">Miércoles — HIIT + Core</div>
-        <div class="day-tag tag-hiit">5 rondas · 50 min</div>
-      </div>
-      <div class="day-arr">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="blk-label">Circuito HIIT — 5 rondas · 30 seg descanso entre rondas</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Duración / Reps</th><th>Nota</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Sentadilla con peso corporal</div></td><td><div class="t-reps">40 seg</div></td><td class="t-clave">Explosivo</td></tr>
-          <tr><td><div class="t-name">Mountain climbers</div></td><td><div class="t-reps">30 seg</div></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Devil's Press</div><div class="t-note">Burpee + swing con mancuerna · 30 lbs</div></td><td><div class="t-reps">10 reps</div></td><td class="t-clave">El más exigente del circuito</td></tr>
-          <tr><td><div class="t-name">Burpees</div></td><td><div class="t-reps">12 reps</div></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Jumping jacks</div></td><td><div class="t-reps">30 seg</div></td><td class="t-clave">Recuperación activa</td></tr>
-        </tbody>
-      </table>
-      <div class="blk-label green">Core — 4 rondas</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Plancha isométrica</div></td><td><div class="t-reps">4 × 50 seg</div></td></tr>
-          <tr><td><div class="t-name">Crunch en cable</div></td><td><div class="t-reps">4 × 20</div></td></tr>
-          <tr><td><div class="t-name">Elevación de piernas colgado</div></td><td><div class="t-reps">4 × 15</div></td></tr>
-          <tr><td><div class="t-name">Ab rollout en cable</div><div class="t-note">Rodillas en suelo · polea baja</div></td><td><div class="t-reps">3 × 12</div></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- JUEVES -->
-  <div class="day" onclick="toggleDay(this)">
-    <div class="day-head">
-      <div class="day-num">J</div>
-      <div class="day-info">
-        <div class="day-name">Jueves — Piernas</div>
-        <div class="day-tag tag-legs">Carga máxima progresiva · 75 min</div>
-      </div>
-      <div class="day-arr">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="blk-label">Big lifts — Smith Machine · Carga aumentada</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><div class="t-name">Squat</div><div class="t-note">Peso final Fase 1 + 5 kg · ~85–90 kg</div></td>
-            <td><div class="t-reps">5 × 8</div></td>
-            <td><span class="b b-smith">Smith</span></td>
-            <td class="t-clave">Última serie: drop set −10 kg</td>
-          </tr>
-          <tr>
-            <td><div class="t-name">Hip Thrust</div><div class="t-note">~100–110 kg</div></td>
-            <td><div class="t-reps">5 × 10</div></td>
-            <td><span class="b b-smith">Smith</span></td>
-            <td class="t-clave">Carga aumentada · 2 seg arriba</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="blk-label blue">Accesorios</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Prensa de pierna</div></td><td><div class="t-reps">5 × 12</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Sin ser conservador</td></tr>
-          <tr><td><div class="t-name">Zancadas búlgaras con mancuernas</div><div class="t-note">30 lbs c/mano</div></td><td><div class="t-reps">4 × 8 c/pierna</div></td><td><span class="b b-comp">Compuesto</span></td><td class="t-clave">Último set al fallo</td></tr>
-          <tr><td><div class="t-name">Extensión de cuádriceps</div></td><td><div class="t-reps">4 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">Pausa 2 seg arriba</td></tr>
-          <tr><td><div class="t-name">Curl femoral en máquina</div></td><td><div class="t-reps">4 × 12</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Elevación de talones</div></td><td><div class="t-reps">5 × 20</div></td><td><span class="b b-iso">Aislamiento</span></td><td class="t-clave">Pausa 2 seg arriba</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- VIERNES -->
-  <div class="day" onclick="toggleDay(this)">
-    <div class="day-head">
-      <div class="day-num">V</div>
-      <div class="day-info">
-        <div class="day-name">Viernes — Full Body Superseries + Cardio</div>
-        <div class="day-tag tag-full">Antagonistas sin descanso · 70 min</div>
-      </div>
-      <div class="day-arr">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="callout blue"><p><strong>Superseries:</strong> ejecuta ejercicio A, sin descanso pasa al B. Descansa 75 seg después del par completo. Mayor densidad, más calorías quemadas por sesión.</p></div>
-      <div class="blk-label">Superseries — 4 rondas cada par</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio A</th><th>Ejercicio B</th><th>Series × Reps</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Bench Press Smith</div><div class="t-note">70% del peso del lunes</div></td><td><div class="t-name">Pull-ups / Chin-ups</div></td><td><div class="t-reps">4 × 12 + máx</div></td></tr>
-          <tr><td><div class="t-name">OHP Smith</div></td><td><div class="t-name">Remo cable sentado</div></td><td><div class="t-reps">3 × 12 + 12</div></td></tr>
-          <tr><td><div class="t-name">RDL con mancuernas</div></td><td><div class="t-name">Zancadas caminando</div></td><td><div class="t-reps">3 × 12 + 12</div></td></tr>
-        </tbody>
-      </table>
-      <div class="callout green"><p><strong>Cardio estado estable — 20 min al 65–70% FC máx.</strong> Post-superseries el cuerpo quema grasa casi exclusivamente.</p></div>
-    </div>
-  </div>
-
-  <div class="rest-block"><p>Sábado / Domingo — Descanso activo</p><span>Caminata 30–45 min · Movilidad · Stretching · Sin pesas</span></div>
-  <div class="callout" style="margin-top:1rem"><p><strong>Semana 7 — Descarga:</strong> Mismos pesos, 40% menos series. El SNC necesita esto antes de la Fase 3 o se estanca.</p></div>
-</div>
-
-<!-- ── FASE 3 · SEM 8–11 ── -->
-<div class="tab" id="fase3">
-  <div class="sec-head">
-    <div class="sec-num">03</div>
-    <div class="sec-info">
-      <div class="sec-title">Fase 3</div>
-      <div class="sec-sub">Semanas 8–11 · Densidad máxima · Límites absolutos · Sem 11 = peak</div>
-    </div>
-  </div>
-  <div class="callout">
-    <p>Más trabajo en el mismo tiempo. Entran <strong>Rest-Pause</strong>, <strong>Giant Sets</strong> y <strong>Myo-reps</strong>. Aquí la composición corporal cambia de forma visible y los números en los big lifts llegan al techo del ciclo.</p>
-  </div>
-
-  <div class="card">
-    <div class="card-head">Técnicas de intensidad — Fase 3</div>
-    <div class="card-body">
-      <ul>
-        <li><strong style="color:var(--fire)">Rest-Pause:</strong> Serie al fallo → 15 seg → 3–5 reps más → 15 seg → 2–3 reps más. Todo cuenta como 1 serie. Se aplica en los big lifts de Smith.</li>
-        <li><strong style="color:var(--lime)">Giant Set en piernas:</strong> Squat → Prensa → Extensión → Curl femoral sin descanso entre ejercicios. Descansa 90 seg al terminar las 4 estaciones. × 4 vueltas.</li>
-        <li><strong style="color:var(--ice)">Myo-reps:</strong> 20 reps iniciales → 5 reps cada 5 seg × 4 veces. Se aplica en aislamiento.</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- LUNES -->
-  <div class="day" onclick="toggleDay(this)">
-    <div class="day-head">
-      <div class="day-num">L</div>
-      <div class="day-info">
-        <div class="day-name">Lunes — Empuje</div>
-        <div class="day-tag tag-push">Rest-Pause · Superseries · 75 min</div>
-      </div>
-      <div class="day-arr">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="blk-label">Big lifts — Rest-Pause · Peso máximo del ciclo</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Bench Press</div><div class="t-note">~105–115 kg · peso máximo alcanzado en Fase 2</div></td><td><div class="t-reps">4 × Rest-Pause</div></td><td><span class="b b-smith">Smith</span></td><td class="t-clave">Al fallo total → 15 seg → sigue × 2</td></tr>
-          <tr><td><div class="t-name">Overhead Press</div><div class="t-note">~70–80 kg</div></td><td><div class="t-reps">4 × Rest-Pause</div></td><td><span class="b b-smith">Smith</span></td><td class="t-clave">Mismo protocolo</td></tr>
-        </tbody>
-      </table>
-      <div class="blk-label blue">Superseries Empuje + Jalón · 60 seg descanso</div>
-      <table class="t">
-        <thead><tr><th>A</th><th>B</th><th>Series × Reps</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Press inclinado mancuernas</div></td><td><div class="t-name">Remo cable</div></td><td><div class="t-reps">4 × 10 + 10</div></td></tr>
-          <tr><td><div class="t-name">Elevaciones laterales</div></td><td><div class="t-name">Face pulls</div></td><td><div class="t-reps">4 × 12 + 20</div></td></tr>
-        </tbody>
-      </table>
-      <div class="blk-label green">Myo-reps — Tríceps</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Protocolo</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Extensión de tríceps en cable</div></td><td class="t-clave">20 reps → 5×5 con 5 seg descanso</td></tr>
-          <tr><td><div class="t-name">Flyes en cable</div></td><td class="t-clave">20 reps → 5×5 con 5 seg descanso</td></tr>
-        </tbody>
-      </table>
-      <div class="callout"><p><strong>Finisher:</strong> 15 min cardio al 70% FC máx.</p></div>
-    </div>
-  </div>
-
-  <!-- MARTES -->
-  <div class="day" onclick="toggleDay(this)">
-    <div class="day-head">
-      <div class="day-num">M</div>
-      <div class="day-info">
-        <div class="day-name">Martes — Jalón</div>
-        <div class="day-tag tag-pull">Pull-ups pesadas · Superseries · 75 min</div>
-      </div>
-      <div class="day-arr">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="blk-label">Big lift — Pull-ups · Peso máximo del ciclo</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Tipo</th><th>Clave</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Pull-ups con peso máximo alcanzado</div><div class="t-note">Mancuerna entre pies o cinturón · última serie al fallo total</div></td><td><div class="t-reps">5 × 5–6</div></td><td><span class="b b-bw">Corporal</span></td><td class="t-clave">Rango completo · sin excusas</td></tr>
-        </tbody>
-      </table>
-      <div class="blk-label blue">Superseries · 60 seg descanso</div>
-      <table class="t">
-        <thead><tr><th>A</th><th>B</th><th>Series × Reps</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Lat Pulldown neutro (V)</div></td><td><div class="t-name">Remo Smith inclinado</div></td><td><div class="t-reps">4 × 10 + 10</div></td></tr>
-          <tr><td><div class="t-name">Remo mancuerna un brazo</div></td><td><div class="t-name">Pull-over con mancuerna</div></td><td><div class="t-reps">3 × 10 + 12</div></td></tr>
-        </tbody>
-      </table>
-      <div class="blk-label green">Myo-reps — Bíceps</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Protocolo</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Curl bíceps con mancuernas</div></td><td class="t-clave">20 reps → 5×5 con 5 seg descanso</td></tr>
-          <tr><td><div class="t-name">Curl martillo</div></td><td class="t-clave">20 reps → 5×5 con 5 seg descanso</td></tr>
-          <tr><td><div class="t-name">Face pulls en cable</div></td><td class="t-clave">4 × 20 — No omitir nunca</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- MIÉRCOLES -->
-  <div class="day" onclick="toggleDay(this)">
-    <div class="day-head">
-      <div class="day-num">X</div>
-      <div class="day-info">
-        <div class="day-name">Miércoles — HIIT + Core</div>
-        <div class="day-tag tag-hiit">Máxima intensidad · 5 rondas · 52 min</div>
-      </div>
-      <div class="day-arr">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="blk-label">Circuito HIIT — 5 rondas · 20 seg descanso entre rondas</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Duración / Reps</th><th>Nota</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Sentadilla con peso corporal</div></td><td><div class="t-reps">40 seg</div></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Mountain climbers</div></td><td><div class="t-reps">30 seg</div></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Devil's Press · 30 lbs</div></td><td><div class="t-reps">12 reps</div></td><td class="t-clave">2 reps más que Fase 2</td></tr>
-          <tr><td><div class="t-name">Burpees</div></td><td><div class="t-reps">12 reps</div></td><td class="t-clave"></td></tr>
-          <tr><td><div class="t-name">Jumping jacks</div></td><td><div class="t-reps">30 seg</div></td><td class="t-clave">Recuperación activa</td></tr>
-        </tbody>
-      </table>
-      <div class="blk-label green">Core — 4 rondas</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Plancha isométrica</div></td><td><div class="t-reps">4 × 60 seg</div></td></tr>
-          <tr><td><div class="t-name">Crunch en cable</div></td><td><div class="t-reps">4 × 25</div></td></tr>
-          <tr><td><div class="t-name">Elevación de piernas colgado</div></td><td><div class="t-reps">4 × 15</div></td></tr>
-          <tr><td><div class="t-name">Ab rollout en cable</div></td><td><div class="t-reps">4 × 12</div></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- JUEVES -->
-  <div class="day" onclick="toggleDay(this)">
-    <div class="day-head">
-      <div class="day-num">J</div>
-      <div class="day-info">
-        <div class="day-name">Jueves — Piernas</div>
-        <div class="day-tag tag-legs">Giant Set · Hip Thrust Rest-Pause · 80 min</div>
-      </div>
-      <div class="day-arr">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="callout green"><p><strong>Giant Set × 4 vueltas:</strong> Squat Smith × 12 → Prensa × 15 → Extensión cuád × 15 → Curl femoral × 12. Sin descanso entre ejercicios. 90 seg de descanso al completar las 4 estaciones.</p></div>
-      <div class="blk-label">Giant Set — 4 vueltas · 90 seg entre vueltas</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Reps por vuelta</th><th>Tipo</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Squat Smith</div><div class="t-note">~95–100 kg</div></td><td><div class="t-reps">12</div></td><td><span class="b b-smith">Smith</span></td></tr>
-          <tr><td><div class="t-name">Prensa de pierna</div></td><td><div class="t-reps">15</div></td><td><span class="b b-comp">Compuesto</span></td></tr>
-          <tr><td><div class="t-name">Extensión de cuádriceps</div></td><td><div class="t-reps">15</div></td><td><span class="b b-iso">Aislamiento</span></td></tr>
-          <tr><td><div class="t-name">Curl femoral en máquina</div></td><td><div class="t-reps">12</div></td><td><span class="b b-iso">Aislamiento</span></td></tr>
-        </tbody>
-      </table>
-      <div class="blk-label blue">Big lift + Aislamiento</div>
-      <table class="t">
-        <thead><tr><th>Ejercicio</th><th>Series × Reps</th><th>Clave</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Hip Thrust Smith — Rest-Pause</div><div class="t-note">~120–130 kg · peso máximo del ciclo</div></td><td><div class="t-reps">4 × Rest-Pause</div></td><td class="t-clave">Al fallo total</td></tr>
-          <tr><td><div class="t-name">Zancadas búlgaras con mancuernas</div></td><td><div class="t-reps">4 × 8 c/pierna</div></td><td class="t-clave">Último set: drop set</td></tr>
-          <tr><td><div class="t-name">Elevación de talones — Myo-reps</div></td><td><div class="t-reps">Myo-reps</div></td><td class="t-clave">20 reps → 5×5 con 5 seg</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- VIERNES -->
-  <div class="day" onclick="toggleDay(this)">
-    <div class="day-head">
-      <div class="day-num">V</div>
-      <div class="day-info">
-        <div class="day-name">Viernes — Full Body + Cardio</div>
-        <div class="day-tag tag-full">Superseries + 25 min cardio · 75 min</div>
-      </div>
-      <div class="day-arr">▼</div>
-    </div>
-    <div class="day-body">
-      <div class="blk-label">Superseries Full Body — 4 rondas · 60 seg descanso</div>
-      <table class="t">
-        <thead><tr><th>A</th><th>B</th><th>Series × Reps</th></tr></thead>
-        <tbody>
-          <tr><td><div class="t-name">Bench Press Smith</div><div class="t-note">70% del peso del lunes</div></td><td><div class="t-name">Pull-ups</div></td><td><div class="t-reps">4 × 12 + máx</div></td></tr>
-          <tr><td><div class="t-name">OHP Smith</div></td><td><div class="t-name">Remo cable</div></td><td><div class="t-reps">3 × 12 + 12</div></td></tr>
-          <tr><td><div class="t-name">RDL con mancuernas</div></td><td><div class="t-name">Zancadas caminando</div></td><td><div class="t-reps">3 × 12 + 12</div></td></tr>
-        </tbody>
-      </table>
-      <div class="callout green"><p><strong>Cardio estado estable — 25 min al 70% FC máx.</strong> La semana termina aquí. Máxima quema de grasa del ciclo.</p></div>
-    </div>
-  </div>
-
-  <div class="rest-block"><p>Sábado / Domingo — Descanso activo</p><span>Caminata 30–45 min · Movilidad · Stretching · Sin pesas</span></div>
-  <div class="card" style="margin-top:1rem">
-    <div class="card-head">Semana 11 — Peak y test</div>
-    <div class="card-body">
-      <ul>
-        <li>Días 1–4: último ciclo completo con máxima intensidad</li>
-        <li>Días 5–7: volumen al 50%, solo big lifts, mismos pesos</li>
-        <li>Reduce carbohidratos los últimos 3 días para mayor definición visual</li>
-        <li>Hidratación: 3+ litros/día</li>
-        <li>Test de máximos: Bench Press Smith · Squat Smith · Pull-ups seguidas con peso</li>
-        <li>Mide: cintura · cadera · brazo · muslo + foto antes/después</li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<!-- ── PROGRESIÓN ── -->
-<div class="tab" id="progresion">
-  <div class="sec-head">
-    <div class="sec-num">↑</div>
-    <div class="sec-info">
-      <div class="sec-title">Progresión</div>
-      <div class="sec-sub">Carga esperada · Métricas que importan</div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-head">Proyección de carga — basada en tu punto de partida real</div>
-    <div class="card-body">
-      <table class="prog-t">
-        <thead><tr><th>Movimiento</th><th>Sem 1</th><th>Sem 3</th><th>Sem 7</th><th>Sem 11</th></tr></thead>
-        <tbody>
-          <tr><td class="prog-lift">Bench Press Smith</td><td>85–90 kg</td><td>92–97 kg</td><td>100–107 kg</td><td>110–120 kg</td></tr>
-          <tr><td class="prog-lift">Squat Smith</td><td>80 kg</td><td>85–90 kg</td><td>95–102 kg</td><td>105–115 kg</td></tr>
-          <tr><td class="prog-lift">Hip Thrust Smith</td><td>90 kg</td><td>97–102 kg</td><td>110–120 kg</td><td>125–140 kg</td></tr>
-          <tr><td class="prog-lift">OHP Smith</td><td>55–60 kg</td><td>62–67 kg</td><td>70–75 kg</td><td>78–85 kg</td></tr>
-          <tr><td class="prog-lift">Pull-ups seguidas (sin peso)</td><td>5–8 reps</td><td>8–12 reps</td><td>Con peso · 6–8 reps</td><td>Con peso · 8–10 reps</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-head">Qué medir — más allá de la báscula</div>
-    <div class="card-body">
-      <ul>
-        <li><strong>Circunferencia de cintura</strong> — bajar &gt;1 cm/mes = quemando grasa visceral ✅</li>
-        <li><strong>Circunferencia de brazo</strong> — mantener o subir = preservando músculo ✅</li>
-        <li><strong>Pull-ups con peso</strong> — el indicador más honesto de fuerza relativa en tu talla/peso</li>
-        <li><strong>Peso en Smith</strong> — progresión lineal semana a semana</li>
-        <li><strong>Foto cada 2 semanas</strong> — misma hora, misma luz, misma postura</li>
-        <li><strong>Peso corporal</strong> — solo referencia; puede no bajar si ganas músculo mientras pierdes grasa</li>
-      </ul>
-    </div>
-  </div>
-
-  <p style="font-family:'IBM Plex Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.12em;color:var(--grey);margin:1.5rem 0 .8rem">Volumen e intensidad por semana</p>
-  <div class="phase-row"><div class="phase-w">01</div><div class="phase-track"><div class="phase-fill" style="width:35%"></div></div><div class="phase-lbl">Reactivación</div></div>
-  <div class="phase-row"><div class="phase-w">02</div><div class="phase-track"><div class="phase-fill" style="width:50%"></div></div><div class="phase-lbl">SNC online</div></div>
-  <div class="phase-row"><div class="phase-w">03</div><div class="phase-track"><div class="phase-fill deload" style="width:20%"></div></div><div class="phase-lbl" style="color:var(--ice)">Descarga</div></div>
-  <div class="phase-row"><div class="phase-w">04</div><div class="phase-track"><div class="phase-fill" style="width:62%"></div></div><div class="phase-lbl">Drop sets</div></div>
-  <div class="phase-row"><div class="phase-w">05</div><div class="phase-track"><div class="phase-fill" style="width:72%"></div></div><div class="phase-lbl">Carga máxima</div></div>
-  <div class="phase-row"><div class="phase-w">06</div><div class="phase-track"><div class="phase-fill" style="width:80%"></div></div><div class="phase-lbl">Superseries</div></div>
-  <div class="phase-row"><div class="phase-w">07</div><div class="phase-track"><div class="phase-fill deload" style="width:20%"></div></div><div class="phase-lbl" style="color:var(--ice)">Descarga</div></div>
-  <div class="phase-row"><div class="phase-w">08</div><div class="phase-track"><div class="phase-fill" style="width:82%"></div></div><div class="phase-lbl">Rest-Pause</div></div>
-  <div class="phase-row"><div class="phase-w">09</div><div class="phase-track"><div class="phase-fill" style="width:90%"></div></div><div class="phase-lbl">Giant sets</div></div>
-  <div class="phase-row"><div class="phase-w">10</div><div class="phase-track"><div class="phase-fill" style="width:97%"></div></div><div class="phase-lbl">Densidad máxima</div></div>
-  <div class="phase-row"><div class="phase-w">11</div><div class="phase-track"><div class="phase-fill peak" style="width:60%"></div></div><div class="phase-lbl" style="color:var(--lime)">Peak + Test</div></div>
-</div>
-
-<!-- ── NUTRICIÓN ── -->
-<div class="tab" id="nutricion">
-  <div class="sec-head">
-    <div class="sec-num">🥩</div>
-    <div class="sec-info">
-      <div class="sec-title">Nutrición</div>
-      <div class="sec-sub">Protocolo para quemar grasa sin perder músculo</div>
-    </div>
-  </div>
-  <div class="macro-grid">
-    <div class="macro-cell"><div class="macro-n">300–500</div><div class="macro-l">Déficit kcal/día</div><div class="macro-s">bajo tu mantenimiento</div></div>
-    <div class="macro-cell"><div class="macro-n">2 g</div><div class="macro-l">Proteína mínima</div><div class="macro-s">por kg de peso corporal · 170 g/día</div></div>
-    <div class="macro-cell"><div class="macro-n">0.8 g</div><div class="macro-l">Grasa dietética</div><div class="macro-s">por kg · ~68 g/día</div></div>
-  </div>
-  <div class="card">
-    <div class="card-head">Timing de comidas — días de entreno</div>
-    <div class="card-body">
-      <ul>
-        <li><strong>Pre-entreno 60–90 min antes:</strong> carbohidrato complejo + proteína moderada. Ej: avena + claras de huevo</li>
-        <li><strong>Post-entreno dentro de 45 min:</strong> proteína rápida + carbo simple. Ej: whey + plátano o arroz blanco</li>
-        <li><strong>Última comida del día:</strong> proteína de digestión lenta + grasa saludable. Ej: requesón + almendras</li>
-        <li><strong>Carbohidratos:</strong> concentra el 70% en pre y post-entreno. El resto del día: proteína + verduras + grasa</li>
-      </ul>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-head">Fuentes de proteína</div>
-    <div class="card-body">
-      <ul>
-        <li>Pechuga de pollo / pavo sin piel</li>
-        <li>Claras de huevo (4–6 enteras + claras extra)</li>
-        <li>Atún / sardinas en agua</li>
-        <li>Requesón / cottage (caseína natural, ideal antes de dormir)</li>
-        <li>Carne magra de res (95%)</li>
-        <li>Whey protein (si no alcanzas 170 g/día con comida real)</li>
-      </ul>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-head">Suplementos — orden de impacto real</div>
-    <div class="card-body">
-      <ul>
-        <li><strong>1. Creatina monohidratada 5 g/día</strong> — desde el día 1, sin ciclos, siempre</li>
-        <li><strong>2. Cafeína 200 mg pre-entreno</strong> — café negro funciona perfecto</li>
-        <li><strong>3. Whey protein</strong> — si no alcanzas los 170 g con comida</li>
-        <li><strong>4. Omega-3 / Fish oil</strong> — reduce inflamación, mejora composición corporal</li>
-        <li><strong>5. Vitamina D3 + Magnesio</strong> — impactan testosterona y sueño; déficit frecuente en México</li>
-      </ul>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-head">Lo que destruye el programa</div>
-    <div class="card-body">
-      <ul>
-        <li><strong>Alcohol</strong> — bloquea síntesis proteica y activa almacenamiento de grasa 24–48 hrs después</li>
-        <li><strong>Déficit &gt;700 kcal/día</strong> — catabolizas músculo, no solo grasa</li>
-        <li><strong>Falta de sueño</strong> — cortisol alto destruye músculo y retiene grasa abdominal. 7–8 hrs no es opcional</li>
-        <li><strong>Saltarse las descargas</strong> — sin ellas el SNC se agota y la fuerza se estanca o retrocede</li>
-      </ul>
+  <div class="sec">
+    <h2 class="anton">Versión de viaje</h2>
+    <p class="lead">Cuando no hay barra de dominadas. La espalda no se queda fuera.</p>
+    <div class="card">
+      <h3>Cómo se hace</h3>
+      <p>20 minutos, vueltas de: 10 remos con la maleta o la mochila cargada, 10 lagartijas, 15 sentadillas, 30 segundos de plancha.</p>
+      <p>El remo se hace con la mochila cargada de lo que traigas, o pasando una toalla por debajo de una mesa firme y jalándote hacia ella con el cuerpo inclinado. Si hay banda, mejor. Lo que no se vale es saltarse el jalón: si lo quitas, el circuito se vuelve puro empuje y el desbalance es justo lo que estamos evitando.</p>
     </div>
   </div>
 </div>
+</section>
 
-</div><!-- /content -->
+<footer>
+  <p>Bloque 1 · 8 semanas<br>Los pesos son tuyos, el rango decide</p>
+</footer>
 
+</div>
 <script>
-function showTab(id, btn) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  btn.classList.add('active');
-}
-function toggleDay(card) { card.classList.toggle('open'); }
+(function(){
+  var tabs=document.querySelectorAll('.tabs button'),views=document.querySelectorAll('.view');
+  tabs.forEach(function(b){
+    b.addEventListener('click',function(){
+      tabs.forEach(function(x){x.setAttribute('aria-selected','false');});
+      b.setAttribute('aria-selected','true');
+      views.forEach(function(v){v.dataset.on=(v.dataset.view===b.dataset.v)?'true':'false';});
+      window.scrollTo(0,0);
+    });
+  });
+  var order=['dom','lun','mar','mie','jue','vie','sab'];
+  var d=document.querySelector('details.day[data-d="'+order[new Date().getDay()]+'"]');
+  if(d){d.open=true;}
+  document.querySelectorAll('details.day').forEach(function(x){
+    x.addEventListener('toggle',function(){
+      if(x.open){document.querySelectorAll('details.day').forEach(function(y){if(y!==x)y.open=false;});}
+    });
+  });
+})();
 </script>
 </body>
 </html>
